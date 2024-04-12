@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 247e86f34bc8cba419b5dd25434ee97a, type: 3}
+  m_Name: Terran
+  m_EditorClassIdentifier: 
+  CardList:
+  - {fileID: 11400000, guid: f9840f1bb1db5af4f8aa3b5cb06677af, type: 2}
+  - {fileID: 11400000, guid: 7bf0c4234d90c0441a20e1500bf5b551, type: 2}
+  - {fileID: 11400000, guid: ce4847a42f0201844ab2dc1c3c0928c9, type: 2}
+  - {fileID: 11400000, guid: dc3c197422547744fb3cae24eb36110b, type: 2}
+  - {fileID: 11400000, guid: dbf5630b740cbb84098f6356d6396518, type: 2}
+  - {fileID: 11400000, guid: c1921a8c14bda814e926561a1c1a86e0, type: 2}
+  - {fileID: 11400000, guid: 735acbddb5c72884ea48823ec4e45405, type: 2}
+  - {fileID: 11400000, guid: 83a5eceaf3b50154585874168312c0ad, type: 2}
+  - {fileID: 11400000, guid: c6d3cf8e543bbfd4bbccf99444b4a131, type: 2}
+  - {fileID: 11400000, guid: 43dd3a15443b54747a88ee72fa75dd3f, type: 2}
+  - {fileID: 11400000, guid: 88372840014845442b7620f855ef5ee3, type: 2}
+  - {fileID: 11400000, guid: 6a1a808b371cecb4fa522c7e7f07b45e, type: 2}
+  - {fileID: 11400000, guid: 21305f3b7a5a800408a0d3f34b506a94, type: 2}

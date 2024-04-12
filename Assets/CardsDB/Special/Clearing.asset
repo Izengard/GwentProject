@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a872af43288cd2948a27d9f4f0184811, type: 3}
+  m_Name: Clearing
+  m_EditorClassIdentifier: 
+  Faction: Neutral
+  FactionLogo: {fileID: 21300000, guid: 18c0d2d90c2dc6c4abcd3f6de81af0a9, type: 3}
+  Name: Clear Skies
+  effect: 7
+  Artwork: {fileID: 21300000, guid: ee3fa65ba5cb23a47a43feec7e397fa3, type: 3}
+  Description: The day dawns with a symphony of light, as the sun casts its golden
+    glow across the clear blue canvas above. The air is fresh and invigorating, filled
+    with the sweet scents of blooming flowers and new beginnings.
+  SpecialType: 5
+  Type: {fileID: 21300000, guid: f317d1094af12dc41b2540f8ceeec62b, type: 3}

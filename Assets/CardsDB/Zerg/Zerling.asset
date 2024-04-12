@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff3eb8bbb2788c419a3ddd56ad5740b, type: 3}
+  m_Name: Zerling
+  m_EditorClassIdentifier: 
+  Faction: Zerg
+  FactionLogo: {fileID: 21300000, guid: 499affb651cbf71409ffb75ed7dbd04c, type: 3}
+  Name: Zerling
+  effect: 4
+  Artwork: {fileID: 21300000, guid: 9a959dcb0ab6636488b0819796ec4d4a, type: 3}
+  Description: Insectoid melee attackers form the backbone of the Zerg army. While
+    individually weak, their strength lies in numbers
+  UnitType: 0
+  Power: 3
+  AttackTypes: 00000000

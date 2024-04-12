@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff3eb8bbb2788c419a3ddd56ad5740b, type: 3}
+  m_Name: Inmortal
+  m_EditorClassIdentifier: 
+  Faction: Protoss
+  FactionLogo: {fileID: 21300000, guid: ad5b5bc5d41599d4eaf637111acb0963, type: 3}
+  Name: Inmortal
+  effect: 9
+  Artwork: {fileID: 21300000, guid: 2047e3ee05bfee748a10d50f6adc9dae, type: 3}
+  Description: Robotic exoskeleton encased in a shell of hardened Khaydarin crystal,
+    the Immortal stands as a testament to the resilience and strength of the Protoss
+    armada
+  UnitType: 0
+  Power: 6
+  AttackTypes: 02000000

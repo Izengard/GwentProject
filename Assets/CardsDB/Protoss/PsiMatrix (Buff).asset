@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a872af43288cd2948a27d9f4f0184811, type: 3}
+  m_Name: PsiMatrix (Buff)
+  m_EditorClassIdentifier: 
+  Faction: Neutral
+  FactionLogo: {fileID: 21300000, guid: ad5b5bc5d41599d4eaf637111acb0963, type: 3}
+  Name: Psionic Matrix
+  effect: 6
+  Artwork: {fileID: 21300000, guid: 1997d8de7f2014849b60823727105dfa, type: 3}
+  Description: 'The Protoss Psionic Matrix is powered by khaydarin crystals and is
+    essential for the Protoss as it allows their structures and units to draw energy
+    from it '
+  SpecialType: 0
+  Type: {fileID: 21300000, guid: bd910bed874f0a3449be075b1e5a69a4, type: 3}

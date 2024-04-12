@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff3eb8bbb2788c419a3ddd56ad5740b, type: 3}
+  m_Name: Reaper
+  m_EditorClassIdentifier: 
+  Faction: Terran
+  FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
+  Name: Reaper
+  effect: 8
+  Artwork: {fileID: 21300000, guid: 155717a68dbdc0244a1b4e03bb63a828, type: 3}
+  Description: These jet-pack-equipped infantry units specialize in hit-and-run combat.
+    Agile and daring, they leap over obstacles, armed with dual pistols and a penchant
+    for chaos
+  UnitType: 0
+  Power: 4
+  AttackTypes: 0000000001000000

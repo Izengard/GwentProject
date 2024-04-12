@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff3eb8bbb2788c419a3ddd56ad5740b, type: 3}
+  m_Name: Colosus
+  m_EditorClassIdentifier: 
+  Faction: Protoss
+  FactionLogo: {fileID: 21300000, guid: ad5b5bc5d41599d4eaf637111acb0963, type: 3}
+  Name: Colosus
+  effect: 2
+  Artwork: {fileID: 21300000, guid: f0c4f8017ec86d747977cbe5eadfec2e, type: 3}
+  Description: Towering above the ground, the colossus is a massive protoss robotic
+    walker. It is designed to destroy large numbers of weaker ground targets, its
+    thermal lances scorching all in its path.
+  UnitType: 0
+  Power: 8
+  AttackTypes: 02000000

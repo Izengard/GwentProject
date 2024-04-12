@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff3eb8bbb2788c419a3ddd56ad5740b, type: 3}
+  m_Name: Probe
+  m_EditorClassIdentifier: 
+  Faction: Protoss
+  FactionLogo: {fileID: 21300000, guid: ad5b5bc5d41599d4eaf637111acb0963, type: 3}
+  Name: Probe
+  effect: 0
+  Artwork: {fileID: 21300000, guid: 4a348febac335224c901e7ade61d8711, type: 3}
+  Description: The humble Probe is the cornerstone of Protoss might, tirelessly gathering
+    resources and constructing the sinews of war with unerring precision.
+  UnitType: 0
+  Power: 1
+  AttackTypes: 00000000
