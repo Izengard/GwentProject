@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 
 public class InitialHandPanel : MonoBehaviour
 {
+    public static InitialHandPanel Instance;
+
     [SerializeField] TextMeshProUGUI PlayerText;
     [SerializeField] TextMeshProUGUI Count;
     [SerializeField] GameObject CardsLayout;
@@ -16,6 +18,13 @@ public class InitialHandPanel : MonoBehaviour
     CardInfo[] ChangedCards = new CardInfo[2];
 
     int player, cardCount, ReadyCount;
+    
+    void Awake()
+    {
+        if (Instance != null) Instance = this;
+        else Destroy(gameObject);
+        this.gameObject.SetActive(true);
+    }
     public void Start()
     {
         cardCount = ReadyCount = player = 0;

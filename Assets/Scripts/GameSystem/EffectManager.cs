@@ -7,13 +7,17 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-    [SerializeField] GameBoard gameBoard;
+   GameBoard gameBoard;
     Player currentPlayer => GameManager.Instance.currentPlayer;
     int enemyPlayer => ((int)currentPlayer + 1) % 2;
     Dictionary<Card, Row>[] CardsOnField => CardManager.Instance.CardsOnPlayerField;
     Battlefield currentPlayerField => gameBoard.PlayerBattlefield[(int)currentPlayer];
     Battlefield enemyPlayerField => gameBoard.PlayerBattlefield[(int)currentPlayer];
 
+    void Awake()
+    {
+        gameBoard = GameBoard.Instance;
+    }
     public void ActivateUnitEffect(Unit unit)
     {
         switch (unit.card.effect)

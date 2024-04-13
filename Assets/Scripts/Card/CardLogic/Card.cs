@@ -23,7 +23,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         }
         else if (GameManager.Instance.GameState == GameState.Start)
         {
-            GameManager.Instance.InitialHandPanel.ChangeThisCard(this);
+            InitialHandPanel.Instance.ChangeThisCard(this);
         }
     }
 

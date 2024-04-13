@@ -8,7 +8,7 @@ public class CardManager : MonoBehaviour
 {
    // Singleton Pattern CardManager
    public static CardManager Instance { get; private set; }
-   [SerializeField] private GameBoard gameBoard;
+   private GameBoard gameBoard;
    [SerializeField] private Transform[] graveyards;
    [SerializeField] private EffectManager effectManager;
    Player currentPlayer => GameManager.Instance.currentPlayer;
@@ -25,6 +25,7 @@ public class CardManager : MonoBehaviour
       else if (Instance != this) Destroy(gameObject);
       CardsOnPlayerField[0] = new();
       CardsOnPlayerField[1] = new();
+      gameBoard = GameBoard.Instance;
    }
 
    public void SummonCard(Card card)

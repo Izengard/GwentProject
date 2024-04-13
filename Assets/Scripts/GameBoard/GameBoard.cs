@@ -5,6 +5,15 @@ using UnityEngine.UI;
 
 public class GameBoard : MonoBehaviour
 {
+    // Singleton Pattern
+    public static GameBoard Instance { get; private set; }
+        void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else if (Instance != this) Destroy(gameObject);
+    }
+    //
+
     [SerializeField] private Battlefield[] playerBattlefield;
     [SerializeField] private PlayerBoard[] playerBoards;
     [SerializeField] private PlayerInfo[] playersInfo;
@@ -19,8 +28,6 @@ public class GameBoard : MonoBehaviour
     public Battlefield[] PlayerBattlefield => playerBattlefield;
     public PlayerBoard[] PlayerBoards => playerBoards;
     public Weathers Weathers => weathers;
-
-
 
     // Frontend
     public void HidePlayerBoards()
@@ -74,8 +81,6 @@ public class GameBoard : MonoBehaviour
             LeanTween.alpha(battery, 0f, 0.5f).setOnComplete(() =>
                 LeanTween.alpha(battery, 1f, 0.5f));
         }
-
-
     }
     void Update()
     {

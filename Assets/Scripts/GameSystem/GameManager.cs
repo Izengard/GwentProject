@@ -23,13 +23,11 @@ public class GameManager : MonoBehaviour
 
     // Frontend Components
     [SerializeField] GameBoard gameBoard;
-    [SerializeField] TextMeshProUGUI GameStatusInfo;
     [SerializeField] GameObject EventDialogBox;
     [SerializeField] TextMeshProUGUI EventText;
     [SerializeField] GameObject VictoryPanel;
     [SerializeField] TextMeshProUGUI VictoryText;
-    [SerializeField] InitialHandPanel InitPanel;
-    public InitialHandPanel InitialHandPanel => InitPanel;
+    [SerializeField] TurnManager turnManager;
 
 
     // Logic fields
@@ -38,18 +36,37 @@ public class GameManager : MonoBehaviour
     public Player currentPlayer { get; private set; }
     int RoundCount = 0;
     int[] VictoryPoints = { 2, 2 };
-    [SerializeField] bool[] PlayersHasPassed = new bool[2];
+
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
-    }
-
-    void Start()
-    {
+        gameBoard = GameBoard.Instance;
         UpdateGameState(GameState.Start);
     }
+
+    void DisplayDialogMessage(string text)
+    {
+        EventDialogBox.SetActive(true);
+        EventDialogBox.transform.localScale = new Vector2(0, 0);
+        scale(EventDialogBox, new Vector2(1f, 1f), 1.5f).setEaseOutQuad();
+        delayedCall(2.4f, () => scale(EventDialogBox, new Vector2(0f, 0f), 1.5f))
+            .setEaseInBounce()
+            .setOnComplete(() => EventDialogBox.SetActive(false));
+        EventText.text = text;
+    }
+
+    public void SetNextPlayer()
+    {
+        int enemyPlayer = ((int)currentPlayer + 1) % 2;
+        currentPlayer = (Player)enemyPlayer;
+    }
+
+    public void UpdateTurnPhase(TurnPhase newTurnPhase) => turnManager.UpdateTurnPhase(newTurnPhase);
+    public void WaitForRowSelection() => UpdateTurnPhase(TurnPhase.SelectRow);
+    public void WaitForCardSelection() => UpdateTurnPhase(TurnPhase.SelectCard);
+
 
     // State Management
     public void UpdateGameState(GameState newState)
@@ -83,20 +100,8 @@ public class GameManager : MonoBehaviour
         Debug.Log(GameState);
     }
 
-    void DisplayDialogMessage(string text)
-    {
-        EventDialogBox.SetActive(true);
-        EventDialogBox.transform.localScale = new Vector2(0, 0);
-        scale(EventDialogBox, new Vector2(1f, 1f), 1.5f).setEaseOutQuad();
-        delayedCall(2.4f, () => scale(EventDialogBox, new Vector2(0f, 0f), 1.5f))
-            .setEaseInBounce()
-            .setOnComplete(() => EventDialogBox.SetActive(false));
-        EventText.text = text;
-    }
-
     void HandleStart()
     {
-        InitPanel.gameObject.SetActive(true);
         int firstPlayer = UnityEngine.Random.Range(0, 2);
         currentPlayer = (Player)firstPlayer;
         Debug.Log($"FirstPlayer is {currentPlayer}");
@@ -104,8 +109,7 @@ public class GameManager : MonoBehaviour
 
     void Round()
     {
-        if (RoundCount == 0)
-            gameBoard.HidePlayerBoards();
+        gameBoard.HidePlayerBoards();
 
         DisplayDialogMessage($"{currentPlayer} Starts the Round");
 
@@ -137,14 +141,13 @@ public class GameManager : MonoBehaviour
             }
 
         if (VictoryPoints[0] == 0 || VictoryPoints[1] == 0)
-            delayedCall(2f,()=>
+            delayedCall(2f, () =>
                 UpdateGameState(GameState.Victory));
 
         RoundCount++;
         CardManager.Instance.ResetField();
         gameBoard.ResetField();
-        PlayersHasPassed[0] = false;
-        PlayersHasPassed[1] = false;
+        turnManager.ResetPass();
 
         Debug.Log(RoundCount);
         delayedCall(2.5f, () =>
@@ -184,8 +187,6 @@ public class GameManager : MonoBehaviour
     public void Victory()
     {
         VictoryPanel.SetActive(true);
-        // scale(VictoryPanel, Vector3.zero, 2f)
-        // .setOnComplete(() =>
         scale(VictoryPanel, Vector3.one, 2f);
 
         if (VictoryPoints.Sum() == 0)
@@ -197,71 +198,5 @@ public class GameManager : MonoBehaviour
 
         delayedCall(3f, () =>
         SceneManager.LoadScene("MainMenu"));
-    }
-
-
-
-
-
-
-    public void UpdateTurnPhase(TurnPhase newPhase)
-    {
-        CurrentTurnPhase = newPhase;
-        HandleTurnPhase(newPhase);
-    }
-
-    private void HandleTurnPhase(TurnPhase newPhase)
-    {
-        Debug.Log($"{newPhase}");
-        switch (newPhase)
-        {
-            case TurnPhase.Draw:
-                CurrentTurnPhase = TurnPhase.Draw;
-                break;
-            case TurnPhase.Play:
-                CurrentTurnPhase = TurnPhase.Play;
-                GameStatusInfo.text = $"{currentPlayer.ToString().Replace('_', ' ')} turn, make a play!";
-                gameBoard.SetActivePlayer(currentPlayer, true);
-                break;
-            case TurnPhase.Summon:
-                CurrentTurnPhase = TurnPhase.Summon;
-                break;
-            case TurnPhase.SelectRow:
-                GameStatusInfo.text = $"Select a Row to summon your card";
-                CurrentTurnPhase = TurnPhase.SelectRow;
-                break;
-            case TurnPhase.SelectCard:
-                GameStatusInfo.text = $"Select a card";
-                CurrentTurnPhase = TurnPhase.SelectCard;
-                break;
-            case TurnPhase.TurnEnd:
-                CurrentTurnPhase = TurnPhase.TurnEnd;
-                EndPlayerTurn();
-                break;
-        }
-        Debug.Log($"{CurrentTurnPhase}");
-
-    }
-    public void WaitForRowSelection() => UpdateTurnPhase(TurnPhase.SelectRow);
-    public void WaitForCardSelection() => UpdateTurnPhase(TurnPhase.SelectCard);
-    void EndPlayerTurn()
-    {
-        int enemyPlayer = ((int)currentPlayer + 1) % 2;
-        if (!PlayersHasPassed[enemyPlayer])
-        {
-            gameBoard.SetActivePlayer(currentPlayer, false);
-            currentPlayer = (Player)enemyPlayer;
-            delayedCall(1.5f, () => UpdateTurnPhase(TurnPhase.Play));
-        }
-        else if (PlayersHasPassed[0] && PlayersHasPassed[1])
-            UpdateGameState(GameState.RoundEnd);
-        else
-            UpdateTurnPhase(TurnPhase.Play);
-    }
-
-    public void Pass()
-    {
-        PlayersHasPassed[(int)currentPlayer] = true;
-        UpdateTurnPhase(TurnPhase.TurnEnd);
     }
 }
