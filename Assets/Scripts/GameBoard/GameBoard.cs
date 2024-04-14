@@ -7,14 +7,14 @@ public class GameBoard : MonoBehaviour
 {
     // Singleton Pattern
     public static GameBoard Instance { get; private set; }
-        void Awake()
+    void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
     }
     //
 
-    [SerializeField] private Battlefield[] playerBattlefield;
+    [SerializeField] private Battlefield[] playerBattlefields;
     [SerializeField] private PlayerBoard[] playerBoards;
     [SerializeField] private PlayerInfo[] playersInfo;
     [SerializeField] Weathers weathers;
@@ -25,7 +25,7 @@ public class GameBoard : MonoBehaviour
     public bool IsWeatherActive(Weather weather) => isWeatherActive[(int)weather];
 
     //Accesors
-    public Battlefield[] PlayerBattlefield => playerBattlefield;
+    public Battlefield[] PlayerBattlefields => playerBattlefields;
     public PlayerBoard[] PlayerBoards => playerBoards;
     public Weathers Weathers => weathers;
 
@@ -50,25 +50,25 @@ public class GameBoard : MonoBehaviour
     public void ResetField()
     {
         HidePlayerBoards();
-        for (int i = 0; i < 2; i++) playerBattlefield[i].ResetField();
+        for (int i = 0; i < 2; i++) playerBattlefields[i].ResetField();
     }
     public void SetWeather(Weather weather)
     {
         isWeatherActive[(int)weather] = true;
-        var affectedRow = PlayerBattlefield[0].Rows[(int)weather];
+        var affectedRow = PlayerBattlefields[0].Rows[(int)weather];
         affectedRow.SetWeather();
-        affectedRow = PlayerBattlefield[1].Rows[(int)weather];
+        affectedRow = PlayerBattlefields[1].Rows[(int)weather];
         affectedRow.SetWeather();
     }
     public void ResetWeather()
     {
-        
+
         weathers.ClearingEffect();
         for (int i = 0; i < 3; i++)
         {
             isWeatherActive[i] = false;
-            PlayerBattlefield[0].Rows[i].ResetWeather();
-            PlayerBattlefield[1].Rows[i].ResetWeather();
+            PlayerBattlefields[0].Rows[i].ResetWeather();
+            PlayerBattlefields[1].Rows[i].ResetWeather();
         }
     }
 
@@ -90,15 +90,15 @@ public class GameBoard : MonoBehaviour
         {
             var info = playersInfo[i];
             info.CardsInHand.text = playerBoards[i].Hand.transform.childCount.ToString();
-            info.PlayerPower.text = playerBattlefield[i].FieldPower.ToString();
+            info.PlayerPower.text = playerBattlefields[i].FieldPower.ToString();
         }
 
-        if (playerBattlefield[0].FieldPower > playerBattlefield[1].FieldPower)
+        if (playerBattlefields[0].FieldPower > playerBattlefields[1].FieldPower)
         {
             playersInfo[0].PlayerPower.color = Color.green;
             playersInfo[1].PlayerPower.color = Color.red;
         }
-        else if (playerBattlefield[0].FieldPower < playerBattlefield[1].FieldPower)
+        else if (playerBattlefields[0].FieldPower < playerBattlefields[1].FieldPower)
         {
             playersInfo[1].PlayerPower.color = Color.green;
             playersInfo[0].PlayerPower.color = Color.red;

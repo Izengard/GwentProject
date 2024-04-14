@@ -6,18 +6,19 @@ public class SpecialCard : Card
 {
     [SerializeField] Image Artwork;
     public Image Type;
-    public SpecialCardInfo card;
+    public SpecialCardInfo cardInfo;
 
-    public override CardInfo CardInfo => card;
+    public override CardInfo CardInfo => cardInfo;
 
     public override void SetCardInfo(CardInfo cardInfo)
     {
-        this.card = cardInfo as SpecialCardInfo;
+        this.cardInfo = cardInfo as SpecialCardInfo;
     }
 
     void Start()
     {
-        Artwork.sprite = card.Artwork;
-        Type.sprite = card.Type;
+        gameObject.name = cardInfo.name;
+        Artwork.sprite = cardInfo.Artwork;
+        Type.sprite = cardInfo.Type;
     }
 }

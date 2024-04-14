@@ -8,14 +8,17 @@ public class CardManager : MonoBehaviour
 {
    // Singleton Pattern CardManager
    public static CardManager Instance { get; private set; }
-   private GameBoard gameBoard;
    [SerializeField] private Transform[] graveyards;
    [SerializeField] private EffectManager effectManager;
    Player currentPlayer => GameManager.Instance.currentPlayer;
-   Battlefield currentField => gameBoard.PlayerBattlefield[(int)currentPlayer];
+   GameBoard gameBoard => GameBoard.Instance;
+   Battlefield currentField => gameBoard.PlayerBattlefields[(int)currentPlayer];
+
 
    // Let's keep a reference of all the cards that has been summoned so we can quickly manage them
    public Dictionary<Card, Row>[] CardsOnPlayerField { get; private set; } = new Dictionary<Card, Row>[2];
+   public List<Card> filedCards;
+   public List<Row> fieldRows;
    List<SpecialCard> Weathers = new();
    Card pendingCard;
 
@@ -25,7 +28,6 @@ public class CardManager : MonoBehaviour
       else if (Instance != this) Destroy(gameObject);
       CardsOnPlayerField[0] = new();
       CardsOnPlayerField[1] = new();
-      gameBoard = GameBoard.Instance;
    }
 
    public void SummonCard(Card card)
@@ -41,7 +43,7 @@ public class CardManager : MonoBehaviour
 
    void SummonUnitCard(Unit unit)
    {
-      var attacks = unit.card.AttackTypes;
+      var attacks = unit.UnitCardInfo.AttackTypes;
       if (attacks.Length == 1)
       {
          var destinationRow = currentField[attacks[0]];
@@ -62,7 +64,7 @@ public class CardManager : MonoBehaviour
    void SummonSpecialCard(SpecialCard special)
    {
       Transform destination;
-      switch (special.card.SpecialType)
+      switch (special.cardInfo.SpecialType)
       {
          case SpecialType.Blizzard:
             if (gameBoard.IsWeatherActive(Blizzard))
@@ -154,6 +156,28 @@ public class CardManager : MonoBehaviour
       }
    }
 
+   void SummonUnitCardInRow(Unit unit, Row row)
+   {
+      unit.GetComponent<AudioSource>().Play();
+      row.AddUnit(unit);
+      CardManager.Instance.CardsOnPlayerField[(int)currentPlayer].Add(unit, row);
+      MoveCardTo(unit, row.RowUnits);
+      CheckRowPowerMods(unit, row);
+      filedCards = CardsOnPlayerField[0].Keys.ToList();
+      fieldRows = CardsOnPlayerField[0].Values.ToList();
+
+      float effectTimeDelay = .75f;
+      if (unit.CardInfo.effect == Effect.Null || unit.CardInfo.effect == Effect.Versatile
+         || unit.CardInfo.effect == Effect.MultiplyPower || unit.CardInfo.effect == Effect.SetBuff
+         || unit.CardInfo.effect == Effect.SetWeather)
+      { effectTimeDelay = 0f; }
+
+      delayedCall(effectTimeDelay, () =>
+             effectManager.ActivateUnitEffect(unit));
+      delayedCall(effectTimeDelay + 1f, () =>
+         GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd));
+   }
+
    void HighlightAllSilverUnits(bool isOn)
    {
       foreach (var card in CardsOnPlayerField[(int)currentPlayer].Keys)
@@ -184,13 +208,12 @@ public class CardManager : MonoBehaviour
 
    public void HandleDecoyTarget(SilverUnit unit)
    {
-      if(!CardsOnPlayerField[(int)currentPlayer].Keys.Contains(unit))
+      if (!CardsOnPlayerField[(int)currentPlayer].Keys.Contains(unit))
       {
          GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
          return;
       }
 
-      unit.ResetBuff(); unit.ResetWeather();
       unit.ReturnToHand();
       HighlightCardOff(pendingCard);
       HighlightAllSilverUnits(false);
@@ -215,7 +238,6 @@ public class CardManager : MonoBehaviour
       GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
    }
 
-
    public static void CheckRowPowerMods(Unit unit, Row row)
    {
       if (unit is SilverUnit silverUnit)
@@ -227,25 +249,13 @@ public class CardManager : MonoBehaviour
       }
    }
 
-   void SummonUnitCardInRow(Unit unit, Row row)
-   {
-      unit.GetComponent<AudioSource>().Play();
-      row.AddUnit(unit);
-      CardManager.Instance.CardsOnPlayerField[(int)currentPlayer].Add(unit, row);
-      MoveCardTo(unit, row.RowUnits);
-      CheckRowPowerMods(unit, row);
-      // delayedCall(1f, () =>
-      // effectManager.ActivateUnitEffect(unit));
-      delayedCall(1f, () =>
-      GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd));
-   }
-
    public void MoveCardTo(Card card, Transform destination)
    {
       if (destination is null) return;
-
+      float moveDuration = 0.75f;
       card.transform.SetParent(gameBoard.transform);
-      LeanTween.move(card.gameObject, destination.position, 1f).setOnComplete(PutInside);
+      LeanTween.move(card.gameObject, destination.position, moveDuration)
+               .setOnComplete(PutInside);
 
       void PutInside()
       {
@@ -259,7 +269,8 @@ public class CardManager : MonoBehaviour
       var graveyardTransform = graveyards[(int)currentPlayer];
       MoveCardTo(card, graveyardTransform);
    }
-   
+
+
    // Highlight the pending card by increasing its local scale, disable its controls to 
    // avoid rescaling on pointer exit, then make it blink using LeanTween.alpha
    void HighlightCard(Card card)

@@ -15,7 +15,7 @@ MonoBehaviour:
   Faction: Terran
   FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
   Name: Hellbat
-  effect: 9
+  effect: 7
   Artwork: {fileID: 21300000, guid: e4badbbf9a2fbf04993b2f6bd1276cbe, type: 3}
   Description: The hellbat roast its enemies in a pyromanitic display
   UnitType: 0

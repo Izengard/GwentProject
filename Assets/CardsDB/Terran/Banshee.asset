@@ -15,7 +15,7 @@ MonoBehaviour:
   Faction: Terran
   FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
   Name: Banshee
-  effect: 2
+  effect: 3
   Artwork: {fileID: 21300000, guid: 4cb0baa1eb4572d4b87b4ac145206ad4, type: 3}
   Description: Swift strike aircraft, Banshees swoop down on their prey with rotary
     cannons, leaving only devastation in their wake

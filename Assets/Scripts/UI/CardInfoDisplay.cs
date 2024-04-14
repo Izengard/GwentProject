@@ -27,8 +27,9 @@ public class InfoDisplay : MonoBehaviour
         Faction.sprite = info.FactionLogo;
         Name.text = info.Name;
         Description.text = info.Description;
-        
-        Effect.text = 
-        string.Concat(info.Effect.Select((x, i) => i > 0 && char.IsUpper(x) ? " " + x : x.ToString()));
+
+        Effect.text =
+        string.Concat(info.effect.ToString()
+              .Select((x, i) => i > 0 && char.IsUpper(x) ? " " + x : x.ToString()));
     }
 }

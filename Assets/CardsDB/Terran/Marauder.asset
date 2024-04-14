@@ -16,7 +16,7 @@ MonoBehaviour:
   FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
   Name: Marauder
   effect: 9
-  Artwork: {fileID: 21300000, guid: 30b37f53091c43744a89838d7c3a39b7, type: 3}
+  Artwork: {fileID: 21300000, guid: d74d4f90cfc811749a1bb2b81d8e9229, type: 3}
   Description: "Clad in Armored Infantry Suit, the marauder is a walking fortress.Its
     armor provides protection against both ballistic and energy-based attacks.The
     suit\u2019s Quad K12 \u201CPunisher\u201D grenade launchers are its signature

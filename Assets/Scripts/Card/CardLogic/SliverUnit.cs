@@ -22,13 +22,17 @@ public class SilverUnit : Unit, IPointerClickHandler
         set => power = value;
     }
 
-    public void MultiplyPower(int n) => this.power *= n;
-
     public void SetWeather() => WeatherIsActive = true;
     public void ResetWeather() => WeatherIsActive = false;
     public void SetBuff() => BuffIsActive = true;
     public void ResetBuff() => BuffIsActive = false;
-    public void ReturnToHand() => cardIsInHand = true;
+    public void ReturnToHand()
+    {
+        cardIsInHand = true;
+        ResetWeather();
+        ResetBuff();
+        Power = UnitCardInfo.Power;
+    }
     public new void OnPointerClick(PointerEventData eventData)
     {
         base.OnPointerClick(eventData);

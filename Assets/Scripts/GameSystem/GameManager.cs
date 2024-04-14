@@ -32,18 +32,22 @@ public class GameManager : MonoBehaviour
 
     // Logic fields
     public GameState GameState { get; private set; }
-    public TurnPhase CurrentTurnPhase { get; private set; }
+    public TurnPhase CurrentTurnPhase => turnManager.CurrentTurnPhase;
     public Player currentPlayer { get; private set; }
     int RoundCount = 0;
     int[] VictoryPoints = { 2, 2 };
-
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
-        gameBoard = GameBoard.Instance;
+
         UpdateGameState(GameState.Start);
+    }
+    void Start()
+    {
+        gameBoard = GameBoard.Instance;
+        if (gameBoard is null) Debug.Log($"Problem with gameboard");
     }
 
     void DisplayDialogMessage(string text)
@@ -116,11 +120,13 @@ public class GameManager : MonoBehaviour
         if (RoundCount != 0)
         {
             UpdateTurnPhase(TurnPhase.Draw);
-            gameBoard.DealCards(currentPlayer, 2);
+            delayedCall(1f, () =>
+                gameBoard.DealCards(currentPlayer, 2));
             int enemyPlayer = ((int)currentPlayer + 1) % 2;
             gameBoard.DealCards((Player)enemyPlayer, 2);
         }
-        UpdateTurnPhase(TurnPhase.Play);
+        delayedCall(1.1f, () =>
+            UpdateTurnPhase(TurnPhase.Play));
     }
 
     void EndRound()
@@ -163,13 +169,13 @@ public class GameManager : MonoBehaviour
     {
         Player? winner;
 
-        Debug.Log($"{gameBoard.PlayerBattlefield[0].FieldPower} vs {gameBoard.PlayerBattlefield[1].FieldPower}");
-        if (gameBoard.PlayerBattlefield[0].FieldPower > gameBoard.PlayerBattlefield[1].FieldPower)
+        Debug.Log($"{gameBoard.PlayerBattlefields[0].FieldPower} vs {gameBoard.PlayerBattlefields[1].FieldPower}");
+        if (gameBoard.PlayerBattlefields[0].FieldPower > gameBoard.PlayerBattlefields[1].FieldPower)
         {
             winner = Player.Player_One;
             DisplayDialogMessage($"{winner.ToString().Replace('_', ' ')} has won the Round");
         }
-        else if (gameBoard.PlayerBattlefield[0].FieldPower < gameBoard.PlayerBattlefield[1].FieldPower)
+        else if (gameBoard.PlayerBattlefields[0].FieldPower < gameBoard.PlayerBattlefields[1].FieldPower)
         {
             winner = Player.Player_Two;
             DisplayDialogMessage($"{winner.ToString().Replace('_', ' ')} has won the Round");
@@ -187,7 +193,7 @@ public class GameManager : MonoBehaviour
     public void Victory()
     {
         VictoryPanel.SetActive(true);
-        scale(VictoryPanel, Vector3.one, 2f);
+        scale(VictoryPanel, new Vector3(1f, 1f, 1f), 1f);
 
         if (VictoryPoints.Sum() == 0)
             VictoryText.text = $"Game is Draw";
@@ -196,7 +202,7 @@ public class GameManager : MonoBehaviour
         else if (VictoryPoints[1] != 0)
             VictoryText.text = $"Player Two Has Won the Game";
 
-        delayedCall(3f, () =>
+        delayedCall(3.5f, () =>
         SceneManager.LoadScene("MainMenu"));
     }
 }

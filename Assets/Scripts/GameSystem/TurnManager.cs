@@ -10,11 +10,9 @@ public class TurnManager : MonoBehaviour
     GameBoard gameBoard;
     public TurnPhase CurrentTurnPhase { get; private set; }
     public Player currentPlayer => GameManager.Instance.currentPlayer;
-
-
     bool[] PlayersHasPassed = new bool[2];
 
-    void Awake()
+    void Start()
     {
         gameBoard = GameBoard.Instance;
     }

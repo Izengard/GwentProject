@@ -15,8 +15,8 @@ MonoBehaviour:
   Faction: Terran
   FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
   Name: Ghost
-  effect: 7
-  Artwork: {fileID: 21300000, guid: c846126948d46d14ca5f61d16b2fef91, type: 3}
+  effect: 2
+  Artwork: {fileID: 21300000, guid: 46a7e9b6a0796594fb25828749dc1b57, type: 3}
   Description: The Terran Ghost, a shadow in the battlefield, emerges from the cloak
     of invisibility.  Their fingers dance across the trigger and with precision 
     they unleash the deadly art of Snipe.

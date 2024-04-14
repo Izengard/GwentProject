@@ -8,12 +8,10 @@ public class CardInfo : ScriptableObject
     public Sprite FactionLogo;
     public string Name;
     public Effect effect;
-    public string Effect => effect.ToString();
     public Sprite Artwork;
     public string Description;
 }
-
-
+ 
 public enum Effect
 {
     Draw, DestroyLesserRow, DestroyLesserUnit, DestroyGreaterUnit,

@@ -58,14 +58,9 @@ public class Row : MonoBehaviour
                 silver.SetBuff();
     }
 
-    public void DestroyUnits()
+      public void ResetRow()
     {
-        this.rowUnits.Clear();
-    }
-
-    public void ResetRow()
-    {
-        DestroyUnits();
+        rowUnits.Clear();
         WeatherIsActive = false;
         BuffIsActive = false;
     }

@@ -16,7 +16,7 @@ MonoBehaviour:
   FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
   Name: Odin
   effect: 1
-  Artwork: {fileID: 21300000, guid: c9771c225550735438b60591095f94fa, type: 3}
+  Artwork: {fileID: 21300000, guid: 1df40609a1cecd74890b2f6aa48b1811, type: 3}
   Description: A behemoth among machines, the Odin is a war mech designed for mass
     destruction, capable of turning the tide of battle with its mere presence.
   UnitType: 1

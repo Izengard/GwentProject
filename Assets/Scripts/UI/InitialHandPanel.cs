@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class InitialHandPanel : MonoBehaviour
 {
-    public static InitialHandPanel Instance;
+    public static InitialHandPanel Instance { get; private set; }
 
     [SerializeField] TextMeshProUGUI PlayerText;
     [SerializeField] TextMeshProUGUI Count;
@@ -18,10 +18,10 @@ public class InitialHandPanel : MonoBehaviour
     CardInfo[] ChangedCards = new CardInfo[2];
 
     int player, cardCount, ReadyCount;
-    
+
     void Awake()
     {
-        if (Instance != null) Instance = this;
+        if (Instance == null) Instance = this;
         else Destroy(gameObject);
         this.gameObject.SetActive(true);
     }
@@ -43,7 +43,7 @@ public class InitialHandPanel : MonoBehaviour
     public void ReadyButton()
     {
         ReadyCount++; Debug.Log(ReadyCount);
-        
+
         // Transfer the cards from the panel to the respective hand 
         for (int i = 0; i < 10; i++)
             CardsLayout.transform.GetChild(0).SetParent(hands[player].transform, false);
@@ -55,7 +55,7 @@ public class InitialHandPanel : MonoBehaviour
         {
             Debug.Log($"Final Count");
             GameManager.Instance.UpdateGameState(GameState.Round);
-            this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
         //Set Next Player
         else

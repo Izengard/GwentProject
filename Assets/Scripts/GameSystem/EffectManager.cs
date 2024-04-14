@@ -7,20 +7,15 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-   GameBoard gameBoard;
+    GameBoard gameBoard => GameBoard.Instance;
     Player currentPlayer => GameManager.Instance.currentPlayer;
     int enemyPlayer => ((int)currentPlayer + 1) % 2;
-    Dictionary<Card, Row>[] CardsOnField => CardManager.Instance.CardsOnPlayerField;
-    Battlefield currentPlayerField => gameBoard.PlayerBattlefield[(int)currentPlayer];
-    Battlefield enemyPlayerField => gameBoard.PlayerBattlefield[(int)currentPlayer];
+    Dictionary<Card, Row>[] SummonedCardsByRow => CardManager.Instance.CardsOnPlayerField;
 
-    void Awake()
-    {
-        gameBoard = GameBoard.Instance;
-    }
+
     public void ActivateUnitEffect(Unit unit)
     {
-        switch (unit.card.effect)
+        switch (unit.CardInfo.effect)
         {
             case Effect.Draw:
                 gameBoard.DealCards(currentPlayer, 1);
@@ -32,7 +27,7 @@ public class EffectManager : MonoBehaviour
                 DestroyLesserUnit();
                 break;
             case Effect.DestroyLesserRow:
-                // DestroyLesserRow();
+                DestroyLesserRow();
                 break;
             case Effect.BalanceFieldPower:
                 BalanceFieldPower();
@@ -52,90 +47,79 @@ public class EffectManager : MonoBehaviour
     void DestroyGreaterUnit()
     {
         int maxPower = 0;
-        for (int i = 0; i < CardsOnField.Length; i++)
-            foreach (var card in CardsOnField[i].Keys)
+        foreach (Dictionary<Card, Row> summonedCards in SummonedCardsByRow)
+            foreach (Card card in summonedCards.Keys)
                 if (card is SilverUnit silverUnit)
                     maxPower = Math.Max(maxPower, silverUnit.Power);
 
-        for (int i = 0; i < CardsOnField.Length; i++)
-            foreach (var card in CardsOnField[i].Keys)
-                if (card is SilverUnit silverUnit && silverUnit.Power == maxPower)
-                {
-                    CardManager.Instance.SendToGraveyard(silverUnit);
-                    LeanTween.delayedCall(.5f,
-                    () => CardsOnField[i].Remove(card));
-                }
+        foreach (var summonedCards in SummonedCardsByRow)
+            for (int i = summonedCards.Keys.Count - 1; i >= 0; i--)
+            {
+                var unit = summonedCards.Keys.ElementAt(i);
+                if (unit is SilverUnit silverUnit && silverUnit.Power == maxPower)
+                    DestroyUnitFrom((Unit)unit, summonedCards);
+            }
     }
 
     void DestroyLesserUnit()
     {
         int minPower = int.MaxValue;
-        foreach (var card in CardsOnField[enemyPlayer].Keys)
+        var enemyCards = SummonedCardsByRow[enemyPlayer];
+        foreach (Card card in enemyCards.Keys)
             if (card is SilverUnit silverUnit)
                 minPower = Math.Min(minPower, silverUnit.Power);
 
-        foreach (var card in CardsOnField[enemyPlayer].Keys)
-            if (card is SilverUnit silverUnit && silverUnit.Power == minPower)
-            {
-                CardManager.Instance.SendToGraveyard(silverUnit);
-                LeanTween.delayedCall(.5f, () =>
-                            CardsOnField[enemyPlayer].Remove(card));
-            }
+        for (int i = enemyCards.Count - 1; i >= 0; i--)
+        {
+            var unit = enemyCards.Keys.ElementAt(i);
+            if (unit is SilverUnit silverUnit && silverUnit.Power == minPower)
+                DestroyUnitFrom((Unit)unit, enemyCards);
+        }
     }
 
     void DestroyLesserRow()
     {
         // Determinate the min count
         int minUnitCount = int.MaxValue;
-        foreach (var field in new[] { currentPlayerField, enemyPlayerField })
-            foreach (var row in field.Rows)
+        foreach (Dictionary<Card, Row> summonedCards in SummonedCardsByRow)
+            foreach (Row row in summonedCards.Values)
                 minUnitCount = Math.Min(minUnitCount, row.UnitsCount);
+        print($"minUnitCount {minUnitCount}");
 
-        // Destroy all the rows with UnitCount equals to minCount
-        foreach (var field in new[] { currentPlayerField, enemyPlayerField })
-            foreach (var row in field.Rows)
-                if (row.UnitsCount == minUnitCount)
-                {
-                    foreach (var card in row.rowUnits)
-                        if (card is SilverUnit silver)
-                            CardManager.Instance.SendToGraveyard(silver);
-
-                    row.DestroyUnits();
-                }
-
-        // UpdateCardManagerDataBase
-        foreach (var field in CardsOnField)
-            for (int i = field.Count - 1; i >= 0; i--)
+        // Destroy all the the silver units from the rows wich UnitCount equals to minCount
+        foreach (Dictionary<Card, Row> summonedCards in SummonedCardsByRow)
+        {
+            var activeRows = summonedCards.Values.ToArray();
+            for (int i = activeRows.Length - 1; i >= 0; i--)
             {
-                var pair = field.ElementAt(i);
-                if (pair.Value.UnitsCount == minUnitCount)
-                    field.Remove(pair.Key);
+                var row = summonedCards.Values.ElementAt(i);
+                if (row.UnitsCount == minUnitCount)
+                    for (int j = 0; j < row.UnitsCount; j++)
+                        if (row.rowUnits[j] is SilverUnit silver)
+                            DestroyUnitFrom(silver, summonedCards);
             }
+        }
     }
     void BalanceFieldPower()
     {
         int average = 0, count = 0;
-        foreach (var field in CardsOnField)
-            foreach (var card in field.Keys)
-                if (card is Unit unit)
-                {
-                    average += unit.Power;
-                    count++;
-                }
+        foreach (var summonedCards in SummonedCardsByRow)
+            foreach (var card in summonedCards.Keys)
+                if (card is Unit unit) { average += unit.Power; count++; }
 
         average /= count;
 
-        foreach (var field in CardsOnField)
-            foreach (var card in field.Keys)
+        foreach (var summonedCards in SummonedCardsByRow)
+            foreach (var card in summonedCards.Keys)
                 if (card is SilverUnit silverUnit)
                     silverUnit.Power = average;
     }
     void MultiplyPower()
     {
-        var cardName = CardsOnField[(int)currentPlayer].Last().Key.CardInfo.Name;
+        var cardName = SummonedCardsByRow[(int)currentPlayer].Last().Key.CardInfo.Name;
         Debug.Log($"{cardName}");
 
-        var row = CardsOnField[(int)currentPlayer].Last().Value;
+        var row = SummonedCardsByRow[(int)currentPlayer].Last().Value;
         int count = 0;
 
         foreach (var unit in row.rowUnits)
@@ -147,17 +131,31 @@ public class EffectManager : MonoBehaviour
 
         foreach (var unit in row.rowUnits)
             if (unit is SilverUnit silver && unit.CardInfo.Name == cardName)
-                silver.MultiplyPower(count);
+                silver.Power = count * unit.UnitCardInfo.Power;
     }
     void SetBuff()
     {
-        var row = CardsOnField[(int)currentPlayer].Last().Value;
+        var row = SummonedCardsByRow[(int)currentPlayer].Last().Value;
         row.ActivateBuff();
     }
     void SetWeather()
     {
-        var row = CardsOnField[(int)currentPlayer].Last().Value;
+        var row = SummonedCardsByRow[(int)currentPlayer].Last().Value;
         int weatherIndex = (int)row.AttackType;
         gameBoard.SetWeather((GameBoard.Weather)weatherIndex);
+    }
+
+    /// <summary>
+    /// When a card is to be destroyed it must be removed from the row, from the CardsOnField Dict 
+    /// and send To graveyard This method encapsulate and abstract such process
+    /// </summary>
+    /// <param name="card">Card to be destroyed in the game</param>
+    /// <param name="CardsOnField"></param> <summary>
+    void DestroyUnitFrom(Unit unit, Dictionary<Card, Row> CardsOnField)
+    {
+        var row = CardsOnField[unit];
+        CardsOnField.Remove(unit);
+        row.RemoveUnit(unit);
+        CardManager.Instance.SendToGraveyard(unit);
     }
 }

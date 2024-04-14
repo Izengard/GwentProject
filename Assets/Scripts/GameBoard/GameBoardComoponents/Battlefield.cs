@@ -34,7 +34,7 @@ public class Battlefield : MonoBehaviour
     public void HighlightRows(Card pendingCard)
     {
         if (pendingCard is Unit unit)
-            foreach (var type in unit.card.AttackTypes)
+            foreach (var type in unit.UnitCardInfo.AttackTypes)
             {
                 int RowIndex = (int)type;
                 Rows[RowIndex].HighlightOn();

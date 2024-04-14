@@ -8,24 +8,25 @@ using System.Linq;
 public abstract class Unit : Card
 {
     [SerializeField] Image Artwork;
-    public UnitCardInfo card;
+    public UnitCardInfo UnitCardInfo;
     public GameObject[] AttackTypeIcons;
     public TextMeshProUGUI PowerText;
     protected int power;
     public int Power => power;
-    public override CardInfo CardInfo { get => card; }
-    public override void SetCardInfo(CardInfo cardInfo)
+    public override CardInfo CardInfo { get => UnitCardInfo; }
+    public override void SetCardInfo(CardInfo unitCardInfo)
     {
-        this.card = cardInfo as UnitCardInfo;
+        this.UnitCardInfo = unitCardInfo as UnitCardInfo;
     }
 
     void Start()
     {
-        Artwork.sprite = card.Artwork;
-        power = card.Power;
+        gameObject.name = UnitCardInfo.name;
+        Artwork.sprite = UnitCardInfo.Artwork;
+        power = UnitCardInfo.Power;
         PowerText.text = power.ToString();
-        AttackTypeIcons[0].SetActive((card.AttackTypes.Contains(Attack.Melee)));
-        AttackTypeIcons[1].SetActive((card.AttackTypes.Contains(Attack.Ranged)));
-        AttackTypeIcons[2].SetActive((card.AttackTypes.Contains(Attack.Siege)));
+        AttackTypeIcons[0].SetActive((UnitCardInfo.AttackTypes.Contains(Attack.Melee)));
+        AttackTypeIcons[1].SetActive((UnitCardInfo.AttackTypes.Contains(Attack.Ranged)));
+        AttackTypeIcons[2].SetActive((UnitCardInfo.AttackTypes.Contains(Attack.Siege)));
     }
 }
