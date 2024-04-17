@@ -15,7 +15,7 @@ MonoBehaviour:
   Faction: Terran
   FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
   Name: Widow Mine
-  effect: 9
+  effect: 1
   Artwork: {fileID: 21300000, guid: 902b92265d8b3634fbfd70d427b11bae, type: 3}
   Description: 'A marvel of Dominion engineering, the ground trembles as it uncoils,
     revealing its payload: a sentinel missile cradled within its metallic frame.'

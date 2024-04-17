@@ -7,16 +7,10 @@ public class GameBoard : MonoBehaviour
 {
     // Singleton Pattern
     public static GameBoard Instance { get; private set; }
-    void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else if (Instance != this) Destroy(gameObject);
-    }
-    //
 
     [SerializeField] private Battlefield[] playerBattlefields;
     [SerializeField] private PlayerBoard[] playerBoards;
-    [SerializeField] private PlayerInfo[] playersInfo;
+    [SerializeField] private PlayerInfo[] playerInfos;
     [SerializeField] Weathers weathers;
     [SerializeField] Button passButton;
     public enum Weather { Blizzard, Fog, Rain }
@@ -30,17 +24,30 @@ public class GameBoard : MonoBehaviour
     public Weathers Weathers => weathers;
 
     // Frontend
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else if (Instance != this) Destroy(gameObject);
+        for (int i = 0; i < 2; i++)
+            playerBoards[i].SetPlayerFaction(i);
+    }
+
+    void Start()
+    {
+        playerInfos[0].playerNick.text = PlayerPrefs.GetString("PlayerOneNick", "Player One").ToUpper();
+        playerInfos[1].playerNick.text = PlayerPrefs.GetString("PlayerTwoNick", "Player Two").ToUpper();
+    }
     public void HidePlayerBoards()
     {
         for (int i = 0; i < 2; i++)
-            LeanTween.scaleX(PlayerBoards[i].gameObject, 0, 0f);
+            LeanTween.scaleX(PlayerBoards[i].gameObject, 0, .5f);
     }
 
     public void SetActivePlayer(Player currentPlayer, bool IsActive)
     {
         var playerBoard = PlayerBoards[(int)currentPlayer];
         if (IsActive)
-            LeanTween.scaleX(playerBoard.gameObject, 1f, 1.2f).setEaseOutBounce();
+            LeanTween.scaleX(playerBoard.gameObject, 1f, 1.2f).setEaseOutBack();
         else
             LeanTween.scaleX(playerBoard.gameObject, 0f, 1.2f);
     }
@@ -49,8 +56,12 @@ public class GameBoard : MonoBehaviour
     public void DealCards(Player player, int n) => PlayerBoards[(int)player].DealCards(n);
     public void ResetField()
     {
-        HidePlayerBoards();
-        for (int i = 0; i < 2; i++) playerBattlefields[i].ResetField();
+        for (int i = 0; i < 2; i++)
+        {
+            playerBattlefields[i].ResetField();
+            playerBoards[i].ResetLeaderEffect();
+        }
+
     }
     public void SetWeather(Weather weather)
     {
@@ -74,7 +85,7 @@ public class GameBoard : MonoBehaviour
 
     public void ConsumePlayerBattery(Player? winner)
     {
-        GameObject battery = playersInfo[(int)winner].Battery[0].gameObject;
+        GameObject battery = playerInfos[(int)winner].Battery[0].gameObject;
         battery.gameObject.SetActive(false);
         for (int i = 0; i < 3; i++)
         {
@@ -88,25 +99,25 @@ public class GameBoard : MonoBehaviour
 
         for (int i = 0; i < 2; i++)
         {
-            var info = playersInfo[i];
+            var info = playerInfos[i];
             info.CardsInHand.text = playerBoards[i].Hand.transform.childCount.ToString();
             info.PlayerPower.text = playerBattlefields[i].FieldPower.ToString();
         }
 
         if (playerBattlefields[0].FieldPower > playerBattlefields[1].FieldPower)
         {
-            playersInfo[0].PlayerPower.color = Color.green;
-            playersInfo[1].PlayerPower.color = Color.red;
+            playerInfos[0].PlayerPower.color = Color.green;
+            playerInfos[1].PlayerPower.color = Color.red;
         }
         else if (playerBattlefields[0].FieldPower < playerBattlefields[1].FieldPower)
         {
-            playersInfo[1].PlayerPower.color = Color.green;
-            playersInfo[0].PlayerPower.color = Color.red;
+            playerInfos[1].PlayerPower.color = Color.green;
+            playerInfos[0].PlayerPower.color = Color.red;
         }
         else
         {
-            playersInfo[1].PlayerPower.color = Color.black;
-            playersInfo[0].PlayerPower.color = Color.black;
+            playerInfos[1].PlayerPower.color = Color.black;
+            playerInfos[0].PlayerPower.color = Color.black;
         }
     }
 }

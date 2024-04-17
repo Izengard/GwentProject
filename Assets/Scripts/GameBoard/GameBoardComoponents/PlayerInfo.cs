@@ -11,9 +11,8 @@ public class PlayerInfo : MonoBehaviour
     public TextMeshProUGUI PlayerPower;
     public CanvasGroup[] Battery;
 
-    // // Update is called once per frame
-    // void Update()
-    // {
-
-    // }
+    void Start()
+    {
+        
+    }
 }

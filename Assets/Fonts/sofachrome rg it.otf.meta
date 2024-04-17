@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 35f7a42c9cf467e4ca40f206b3e55ad7
+guid: ad5caca241c90d34ba2e8d41da4dea16
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Space Matic
+  - Sofachrome
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

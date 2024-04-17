@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 784143e9977701743af09ebf425b2fa5
+guid: 614fedc27bcb2cb4ba1ed190a6148403
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Space Matic
+  - Zekton
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

@@ -6,15 +6,13 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    [SerializeField] private CardDB DeckDB;
     [SerializeField] private List<CardInfo> DeckCards;
     [SerializeField] private CardGenerator cardGenerator;
-    private AudioSource SoundEffect;
+    [SerializeField] AudioSource SoundEffect;
 
-    void Awake()
+    public void SetDeckData(DeckData deckData)
     {
-        SoundEffect = this.GetComponent<AudioSource>();
-        DeckCards = new List<CardInfo>(DeckDB.CardList);
+        DeckCards = new List<CardInfo>(deckData.CardList);
         Shuffle();
     }
 

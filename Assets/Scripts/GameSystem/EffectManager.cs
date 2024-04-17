@@ -13,9 +13,9 @@ public class EffectManager : MonoBehaviour
     Dictionary<Card, Row>[] SummonedCardsByRow => CardManager.Instance.CardsOnPlayerField;
 
 
-    public void ActivateUnitEffect(Unit unit)
+    public void ActivateEffect(Effect effect)
     {
-        switch (unit.CardInfo.effect)
+        switch (effect)
         {
             case Effect.Draw:
                 gameBoard.DealCards(currentPlayer, 1);
@@ -97,6 +97,8 @@ public class EffectManager : MonoBehaviour
                     for (int j = 0; j < row.UnitsCount; j++)
                         if (row.rowUnits[j] is SilverUnit silver)
                             DestroyUnitFrom(silver, summonedCards);
+
+                row.ResetDecoys();
             }
         }
     }

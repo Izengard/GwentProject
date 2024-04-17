@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardInfo : ScriptableObject
+public abstract class CardInfo : ScriptableObject
 {
     public string Faction;
     public Sprite FactionLogo;
@@ -11,9 +11,9 @@ public class CardInfo : ScriptableObject
     public Sprite Artwork;
     public string Description;
 }
- 
+
 public enum Effect
 {
-    Draw, DestroyLesserRow, DestroyLesserUnit, DestroyGreaterUnit,
-    MultiplyPower, BalanceFieldPower, SetBuff, SetWeather, Versatile, Null,Decoy
+    Draw, DestroyLesserRow, DestroyLesserUnit, DestroyGreaterUnit, MultiplyPower,
+    BalanceFieldPower, SetBuff, SetWeather, Versatile, Null, Decoy, Clearing
 }

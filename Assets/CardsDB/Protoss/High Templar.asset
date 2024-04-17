@@ -16,7 +16,7 @@ MonoBehaviour:
   FactionLogo: {fileID: 21300000, guid: ad5b5bc5d41599d4eaf637111acb0963, type: 3}
   Name: High Templar
   effect: 5
-  Artwork: {fileID: 21300000, guid: 5ca90ed08f200c24e8e2014d35e88afe, type: 3}
+  Artwork: {fileID: 21300000, guid: 8ec07e036bfde2941893e2cc98288724, type: 3}
   Description: High Templar are the revered masters of psionic power, their chants
     weaving the fabric of reality into a tapestry of destruction for their foes.
   UnitType: 1

@@ -9,12 +9,12 @@ public class UnitCardInfo : CardInfo
 {
     public UnitType UnitType;
     public int Power;
-    public Attack[] AttackTypes;
+    public AttackType[] AttackTypes;
 }
 
 public enum UnitType { Silver, Golden }
 
-public enum Attack
+public enum AttackType
 {
     Melee, Ranged, Siege
 }

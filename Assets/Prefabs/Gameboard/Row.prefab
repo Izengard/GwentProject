@@ -727,8 +727,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BuffTransform: {fileID: 2545596370466197471}
-  RowUnits: {fileID: 8614478886370601472}
+  RowUnitsTransform: {fileID: 8614478886370601472}
   highlightEffect: {fileID: 6738155635167784337}
   PowerSubtotalScore: {fileID: 5395189463562135466}
-  attackType: 0
   WeatherEffect: {fileID: 5170769396488841439}

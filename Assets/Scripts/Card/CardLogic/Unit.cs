@@ -25,8 +25,8 @@ public abstract class Unit : Card
         Artwork.sprite = UnitCardInfo.Artwork;
         power = UnitCardInfo.Power;
         PowerText.text = power.ToString();
-        AttackTypeIcons[0].SetActive((UnitCardInfo.AttackTypes.Contains(Attack.Melee)));
-        AttackTypeIcons[1].SetActive((UnitCardInfo.AttackTypes.Contains(Attack.Ranged)));
-        AttackTypeIcons[2].SetActive((UnitCardInfo.AttackTypes.Contains(Attack.Siege)));
+        AttackTypeIcons[0].SetActive((UnitCardInfo.AttackTypes.Contains(AttackType.Melee)));
+        AttackTypeIcons[1].SetActive((UnitCardInfo.AttackTypes.Contains(AttackType.Ranged)));
+        AttackTypeIcons[2].SetActive((UnitCardInfo.AttackTypes.Contains(AttackType.Siege)));
     }
 }

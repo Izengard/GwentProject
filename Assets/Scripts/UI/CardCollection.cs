@@ -6,7 +6,7 @@ public class CardCollection : MonoBehaviour
 {
     [SerializeField] CardGenerator cardGenerator;
     [SerializeField] Transform[] FactionGrid;
-    [SerializeField] CardDB[] Factions = new CardDB[4];
+    [SerializeField] DeckData[] Factions = new DeckData[4];
 
     void Start()
     {

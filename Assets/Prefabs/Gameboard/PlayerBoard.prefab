@@ -183,11 +183,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6588577152574676453}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.96946913, y: 0.40474796}
-  m_AnchorMax: {x: 0.96946913, y: 0.40474796}
-  m_AnchoredPosition: {x: 47, y: -67.07}
-  m_SizeDelta: {x: 110.095, y: 142.57692}
-  m_Pivot: {x: 1, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 708.66846, y: -12.044491}
+  m_SizeDelta: {x: 110.09503, y: 142.57692}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2817687569642333565
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1206,8 +1206,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deck: {fileID: 2868505775433180837}
   hand: {fileID: 0}
-  passButton: {fileID: 0}
-  leaderButton: {fileID: 0}
+  Leader: {fileID: 0}
+  dataBase: {fileID: 11400000, guid: e88667a10cfd2844ba0e5fa622bdd3d4, type: 2}
 --- !u!1 &8065234419983597117
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,9 +1494,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9fee351abef4574f9bfab4f924a62a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeckDB: {fileID: 11400000, guid: e88667a10cfd2844ba0e5fa622bdd3d4, type: 2}
   DeckCards: []
   cardGenerator: {fileID: 6933663574179592309}
+  SoundEffect: {fileID: 0}
 --- !u!114 &6933663574179592309
 MonoBehaviour:
   m_ObjectHideFlags: 0

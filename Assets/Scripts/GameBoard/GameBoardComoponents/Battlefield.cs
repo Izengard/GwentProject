@@ -12,7 +12,7 @@ public class Battlefield : MonoBehaviour
     public Row RangedRow => Rows[1];
     public Row SiegeRow => Rows[2];
 
-    public Row this[Attack attack] => Rows[(int)attack];
+    public Row this[AttackType attack] => Rows[(int)attack];
 
     public int FieldPower
     {

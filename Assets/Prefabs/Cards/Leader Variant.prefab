@@ -328,6 +328,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad034662b17c5e4aa16337e917c9632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leaderInfo: {fileID: 0}
+  Artwork: {fileID: 4483979771464122258}
+  FactionLogo: {fileID: 4659923026854122135}
+  LeaderButton: {fileID: 0}
+--- !u!114 &4483979771464122258 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4001920814781509544, guid: 3f6c01f695b7a094db4fa5b9ce3265c9, type: 3}
+  m_PrefabInstance: {fileID: 699155390044885050}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4659923026854122135 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5267163529305211565, guid: 3f6c01f695b7a094db4fa5b9ce3265c9, type: 3}
+  m_PrefabInstance: {fileID: 699155390044885050}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7037476570907887571 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7501244051890739177, guid: 3f6c01f695b7a094db4fa5b9ce3265c9, type: 3}

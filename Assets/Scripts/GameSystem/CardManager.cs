@@ -142,8 +142,7 @@ public class CardManager : MonoBehaviour
       if (destination is not null)
       {
          MoveCardTo(special, destination);
-         delayedCall(1, () =>
-         GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd));
+         GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd);
       }
 
       bool AnySilverUnit()
@@ -161,7 +160,7 @@ public class CardManager : MonoBehaviour
       unit.GetComponent<AudioSource>().Play();
       row.AddUnit(unit);
       CardManager.Instance.CardsOnPlayerField[(int)currentPlayer].Add(unit, row);
-      MoveCardTo(unit, row.RowUnits);
+      MoveCardTo(unit, row.RowUnitsTransform);
       CheckRowPowerMods(unit, row);
       filedCards = CardsOnPlayerField[0].Keys.ToList();
       fieldRows = CardsOnPlayerField[0].Values.ToList();
@@ -173,17 +172,19 @@ public class CardManager : MonoBehaviour
       { effectTimeDelay = 0f; }
 
       delayedCall(effectTimeDelay, () =>
-             effectManager.ActivateUnitEffect(unit));
-      delayedCall(effectTimeDelay + 1f, () =>
+         ActivateEffect(unit.CardInfo.effect));
+      delayedCall(effectTimeDelay, () =>
          GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd));
    }
 
-   void HighlightAllSilverUnits(bool isOn)
+   public void ActivateEffect(Effect effect) => effectManager.ActivateEffect(effect);
+
+   void HighlightAllSilverUnits(bool On)
    {
       foreach (var card in CardsOnPlayerField[(int)currentPlayer].Keys)
       {
          if (card is SilverUnit silver)
-            if (isOn) HighlightCard(silver);
+            if (On) HighlightCard(silver);
             else HighlightCardOff(silver);
       }
    }
@@ -222,12 +223,12 @@ public class CardManager : MonoBehaviour
       row.RemoveUnit(unit);
       CardsOnPlayerField[(int)currentPlayer].Remove(unit);
       CardsOnPlayerField[(int)currentPlayer].Add(pendingCard, row);
+      row.AddDecoy();
 
       MoveCardTo(pendingCard, unit.transform.parent);
       var hand = gameBoard.PlayerBoards[(int)currentPlayer].Hand.transform;
       MoveCardTo(unit, hand);
-      delayedCall(1, () =>
-      GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd));
+      GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd);
    }
 
    public void CancelCardSelection()
@@ -279,11 +280,13 @@ public class CardManager : MonoBehaviour
       card.GetComponent<CardControls>().enabled = false;
       LeanTween.alpha(card.gameObject, 0.5f, 1.5f).setOnComplete(() => LeanTween.alpha(card.gameObject, 1f, 1f));
    }
+
    public void HighlightCardOff(Card card)
    {
       card.transform.LeanScale(Vector2.one, 1f);
       card.GetComponent<CardControls>().enabled = true;
    }
+
    public void ResetField()
    {
       foreach (var card in CardsOnPlayerField[0].Keys)

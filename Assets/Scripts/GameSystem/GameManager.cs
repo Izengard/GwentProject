@@ -13,8 +13,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 
 public enum GameState { Start, Round, RoundEnd, Victory }
-public enum TurnPhase { Draw, Play, Summon, SelectRow, SelectCard, TurnEnd }
-public enum Player { Player_One, Player_Two }
+public enum Player { PlayerOne, PlayerTwo }
 
 public class GameManager : MonoBehaviour
 {
@@ -36,11 +35,16 @@ public class GameManager : MonoBehaviour
     public Player currentPlayer { get; private set; }
     int RoundCount = 0;
     int[] VictoryPoints = { 2, 2 };
+    string[] PlayerNames;
+    public string currentPlayerName => PlayerNames[(int)currentPlayer];
+
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
+        PlayerNames = new string[2]{PlayerPrefs.GetString("PlayerOneNick", "Player One"),
+                            PlayerPrefs.GetString("PlayerTwoNick", "Player Two")};
 
         UpdateGameState(GameState.Start);
     }
@@ -67,7 +71,9 @@ public class GameManager : MonoBehaviour
         currentPlayer = (Player)enemyPlayer;
     }
 
-    public void UpdateTurnPhase(TurnPhase newTurnPhase) => turnManager.UpdateTurnPhase(newTurnPhase);
+    public void UpdateTurnPhase(TurnPhase newTurnPhase) =>
+         turnManager.UpdateTurnPhase(newTurnPhase);
+    
     public void WaitForRowSelection() => UpdateTurnPhase(TurnPhase.SelectRow);
     public void WaitForCardSelection() => UpdateTurnPhase(TurnPhase.SelectCard);
 
@@ -108,19 +114,19 @@ public class GameManager : MonoBehaviour
     {
         int firstPlayer = UnityEngine.Random.Range(0, 2);
         currentPlayer = (Player)firstPlayer;
-        Debug.Log($"FirstPlayer is {currentPlayer}");
+        Debug.Log($"FirstPlayer is {currentPlayerName}");
     }
 
     void Round()
     {
         gameBoard.HidePlayerBoards();
 
-        DisplayDialogMessage($"{currentPlayer} Starts the Round");
+        DisplayDialogMessage($"{currentPlayerName} Starts the Round");
 
         if (RoundCount != 0)
         {
             UpdateTurnPhase(TurnPhase.Draw);
-            delayedCall(1f, () =>
+            delayedCall(2f, () =>
                 gameBoard.DealCards(currentPlayer, 2));
             int enemyPlayer = ((int)currentPlayer + 1) % 2;
             gameBoard.DealCards((Player)enemyPlayer, 2);
@@ -172,13 +178,13 @@ public class GameManager : MonoBehaviour
         Debug.Log($"{gameBoard.PlayerBattlefields[0].FieldPower} vs {gameBoard.PlayerBattlefields[1].FieldPower}");
         if (gameBoard.PlayerBattlefields[0].FieldPower > gameBoard.PlayerBattlefields[1].FieldPower)
         {
-            winner = Player.Player_One;
-            DisplayDialogMessage($"{winner.ToString().Replace('_', ' ')} has won the Round");
+            winner = Player.PlayerOne;
+            DisplayDialogMessage($"{PlayerNames[0]} has won the Round");
         }
         else if (gameBoard.PlayerBattlefields[0].FieldPower < gameBoard.PlayerBattlefields[1].FieldPower)
         {
-            winner = Player.Player_Two;
-            DisplayDialogMessage($"{winner.ToString().Replace('_', ' ')} has won the Round");
+            winner = Player.PlayerTwo;
+            DisplayDialogMessage($"{PlayerNames[1]} has won the Round");
         }
         else
         {
@@ -198,9 +204,9 @@ public class GameManager : MonoBehaviour
         if (VictoryPoints.Sum() == 0)
             VictoryText.text = $"Game is Draw";
         else if (VictoryPoints[0] != 0)
-            VictoryText.text = $"Player One Has Won the Game";
+            VictoryText.text = $"{PlayerNames[0]} Has Won the Game";
         else if (VictoryPoints[1] != 0)
-            VictoryText.text = $"Player Two Has Won the Game";
+            VictoryText.text = $"{PlayerNames[1]} Has Won the Game";
 
         delayedCall(3.5f, () =>
         SceneManager.LoadScene("MainMenu"));

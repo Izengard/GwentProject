@@ -8,15 +8,17 @@ using UnityEngine.EventSystems;
 public class Row : MonoBehaviour
 {
     public Transform BuffTransform;
-    public Transform RowUnits;
+    public Transform RowUnitsTransform;
     public bool BuffIsActive { get; private set; }
     public bool WeatherIsActive { get; private set; }
     public List<Unit> rowUnits { get; private set; } = new List<Unit>();
     [SerializeField] HighlightEffect highlightEffect;
     [SerializeField] TextMeshProUGUI PowerSubtotalScore;
-    [SerializeField] Attack attackType;
     [SerializeField] GameObject WeatherEffect;
-    public Attack AttackType => attackType;
+    AttackType attackType;
+    public AttackType AttackType => attackType;
+    int decoyCount = 0;
+
 
     public int PowerSubtotal
     {
@@ -31,11 +33,13 @@ public class Row : MonoBehaviour
             return powerSubtotal;
         }
     }
-    public int UnitsCount => rowUnits.Count;
+    public int UnitsCount => rowUnits.Count + decoyCount;
+
 
     public void AddUnit(Unit card) => this.rowUnits.Add(card);
     public void RemoveUnit(Unit card) => this.rowUnits.Remove(card);
-
+    public void AddDecoy() => decoyCount++;
+    public void ResetDecoys() => decoyCount = 0;
     public void SetWeather()
     {
         this.WeatherIsActive = true;
@@ -58,11 +62,12 @@ public class Row : MonoBehaviour
                 silver.SetBuff();
     }
 
-      public void ResetRow()
+    public void ResetRow()
     {
         rowUnits.Clear();
         WeatherIsActive = false;
         BuffIsActive = false;
+        decoyCount = 0;
     }
 
     public void HighlightOn() => this.highlightEffect.gameObject.SetActive(true);

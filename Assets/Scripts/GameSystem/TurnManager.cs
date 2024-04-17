@@ -4,6 +4,9 @@ using UnityEngine;
 using TMPro;
 using static LeanTween;
 
+public enum TurnPhase { Draw, Play, Summon, SelectRow, SelectCard, TurnEnd }
+
+
 public class TurnManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI GameStatusInfo;
@@ -39,7 +42,7 @@ public class TurnManager : MonoBehaviour
                 CurrentTurnPhase = TurnPhase.Summon;
                 break;
             case TurnPhase.SelectRow:
-                GameStatusInfo.text = $"Select a Row to summon your card";
+                GameStatusInfo.text = $"Select a Row to summon your card to";
                 CurrentTurnPhase = TurnPhase.SelectRow;
                 break;
             case TurnPhase.SelectCard:
@@ -48,12 +51,13 @@ public class TurnManager : MonoBehaviour
                 break;
             case TurnPhase.TurnEnd:
                 CurrentTurnPhase = TurnPhase.TurnEnd;
-                EndPlayerTurn();
+                LeanTween.delayedCall(1f, () =>
+                    EndPlayerTurn());
                 break;
         }
         Debug.Log($"{CurrentTurnPhase}");
     }
-    
+
     void EndPlayerTurn()
     {
         int enemyPlayer = ((int)currentPlayer + 1) % 2;
