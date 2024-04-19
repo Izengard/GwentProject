@@ -8,7 +8,6 @@ using TMPro;
 using static LeanTween;
 using UnityEngine.SocialPlatforms;
 using System.Threading.Tasks;
-using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
@@ -30,9 +29,9 @@ public class GameManager : MonoBehaviour
 
 
     // Logic fields
-    public GameState GameState { get; private set; }
-    public TurnPhase CurrentTurnPhase => turnManager.CurrentTurnPhase;
-    public Player currentPlayer { get; private set; }
+    [field: SerializeField] public GameState GameState { get; private set; }
+    [field: SerializeField] public Player currentPlayer { get; private set; }
+    [SerializeField] public TurnPhase CurrentTurnPhase => turnManager.CurrentTurnPhase;
     int RoundCount = 0;
     int[] VictoryPoints = { 2, 2 };
     string[] PlayerNames;
@@ -59,7 +58,7 @@ public class GameManager : MonoBehaviour
         EventDialogBox.SetActive(true);
         EventDialogBox.transform.localScale = new Vector2(0, 0);
         scale(EventDialogBox, new Vector2(1f, 1f), 1.5f).setEaseOutQuad();
-        delayedCall(2.4f, () => scale(EventDialogBox, new Vector2(0f, 0f), 1.5f))
+        delayedCall(2f, () => scale(EventDialogBox, new Vector2(0f, 0f), 1.5f))
             .setEaseInBounce()
             .setOnComplete(() => EventDialogBox.SetActive(false));
         EventText.text = text;
@@ -71,9 +70,9 @@ public class GameManager : MonoBehaviour
         currentPlayer = (Player)enemyPlayer;
     }
 
-    public void UpdateTurnPhase(TurnPhase newTurnPhase) =>
-         turnManager.UpdateTurnPhase(newTurnPhase);
-    
+    public void UpdateTurnPhase(TurnPhase newTurnPhase, float timeDelay = 0f) =>
+         turnManager.UpdateTurnPhase(newTurnPhase, timeDelay);
+
     public void WaitForRowSelection() => UpdateTurnPhase(TurnPhase.SelectRow);
     public void WaitForCardSelection() => UpdateTurnPhase(TurnPhase.SelectCard);
 
@@ -119,22 +118,15 @@ public class GameManager : MonoBehaviour
 
     void Round()
     {
-        gameBoard.HidePlayerBoards();
-
+        gameBoard.HidePlayerHands();
         DisplayDialogMessage($"{currentPlayerName} Starts the Round");
 
         if (RoundCount != 0)
-        {
-            UpdateTurnPhase(TurnPhase.Draw);
-            delayedCall(2f, () =>
-                gameBoard.DealCards(currentPlayer, 2));
-            int enemyPlayer = ((int)currentPlayer + 1) % 2;
-            gameBoard.DealCards((Player)enemyPlayer, 2);
-        }
-        delayedCall(1.1f, () =>
-            UpdateTurnPhase(TurnPhase.Play));
-    }
+            UpdateTurnPhase(TurnPhase.Draw, 1.5f);
 
+        UpdateTurnPhase(TurnPhase.Play, 1.6f);
+    }
+    
     void EndRound()
     {
         var winner = DetermineRoundWinner();
@@ -152,10 +144,6 @@ public class GameManager : MonoBehaviour
                 VictoryPoints[(int)player]--;
             }
 
-        if (VictoryPoints[0] == 0 || VictoryPoints[1] == 0)
-            delayedCall(2f, () =>
-                UpdateGameState(GameState.Victory));
-
         RoundCount++;
         CardManager.Instance.ResetField();
         gameBoard.ResetField();
@@ -171,7 +159,7 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    public Player? DetermineRoundWinner()
+    Player? DetermineRoundWinner()
     {
         Player? winner;
 
@@ -196,7 +184,7 @@ public class GameManager : MonoBehaviour
         return winner;
     }
 
-    public void Victory()
+    void Victory()
     {
         VictoryPanel.SetActive(true);
         scale(VictoryPanel, new Vector3(1f, 1f, 1f), 1f);

@@ -11,6 +11,7 @@ public class EffectManager : MonoBehaviour
     Player currentPlayer => GameManager.Instance.currentPlayer;
     int enemyPlayer => ((int)currentPlayer + 1) % 2;
     Dictionary<Card, Row>[] SummonedCardsByRow => CardManager.Instance.CardsOnPlayerField;
+    Dictionary<SpecialCard, Player> WeathersByPlayer => CardManager.Instance.WeathersByPlayer;
 
 
     public void ActivateEffect(Effect effect)
@@ -41,6 +42,9 @@ public class EffectManager : MonoBehaviour
             case Effect.SetWeather:
                 SetWeather();
                 break;
+            case Effect.Clearing:
+                Clearing();
+                break;
         }
     }
 
@@ -52,13 +56,16 @@ public class EffectManager : MonoBehaviour
                 if (card is SilverUnit silverUnit)
                     maxPower = Math.Max(maxPower, silverUnit.Power);
 
-        foreach (var summonedCards in SummonedCardsByRow)
-            for (int i = summonedCards.Keys.Count - 1; i >= 0; i--)
+        for (int i = 0; i < SummonedCardsByRow.Length; i++)
+        {
+            var summonedCards = SummonedCardsByRow[i];
+            for (int j = summonedCards.Keys.Count - 1; j >= 0; j--)
             {
-                var unit = summonedCards.Keys.ElementAt(i);
+                var unit = summonedCards.Keys.ElementAt(j);
                 if (unit is SilverUnit silverUnit && silverUnit.Power == maxPower)
-                    DestroyUnitFrom((Unit)unit, summonedCards);
+                    DestroyUnitFrom((Unit)unit, summonedCards, (Player)i);
             }
+        }
     }
 
     void DestroyLesserUnit()
@@ -73,7 +80,7 @@ public class EffectManager : MonoBehaviour
         {
             var unit = enemyCards.Keys.ElementAt(i);
             if (unit is SilverUnit silverUnit && silverUnit.Power == minPower)
-                DestroyUnitFrom((Unit)unit, enemyCards);
+                DestroyUnitFrom((Unit)unit, enemyCards, (Player)enemyPlayer);
         }
     }
 
@@ -87,19 +94,24 @@ public class EffectManager : MonoBehaviour
         print($"minUnitCount {minUnitCount}");
 
         // Destroy all the the silver units from the rows wich UnitCount equals to minCount
-        foreach (Dictionary<Card, Row> summonedCards in SummonedCardsByRow)
+        for (int i = 0; i < SummonedCardsByRow.Length; i++)
         {
+            Dictionary<Card, Row> summonedCards = SummonedCardsByRow[i];
             var activeRows = summonedCards.Values.ToArray();
-            for (int i = activeRows.Length - 1; i >= 0; i--)
+            for (int j = activeRows.Length - 1; j >= 0; j--)
             {
-                var row = summonedCards.Values.ElementAt(i);
+                var row = summonedCards.Values.ElementAt(j);
                 if (row.UnitsCount == minUnitCount)
-                    for (int j = 0; j < row.UnitsCount; j++)
-                        if (row.rowUnits[j] is SilverUnit silver)
-                            DestroyUnitFrom(silver, summonedCards);
+                {
+                    Debug.Log($"{row.UnitsCount}");
+                    for (int k = 0; k < row.UnitsCount; k++)
+                        if (row.rowUnits[k] is SilverUnit silver)
+                            DestroyUnitFrom(silver, summonedCards, (Player)i);
 
-                row.ResetDecoys();
+                    row.ResetDecoys();
+                }
             }
+
         }
     }
     void BalanceFieldPower()
@@ -146,18 +158,26 @@ public class EffectManager : MonoBehaviour
         int weatherIndex = (int)row.AttackType;
         gameBoard.SetWeather((GameBoard.Weather)weatherIndex);
     }
+    public void Clearing()
+    {
+        gameBoard.ResetWeather();
+        foreach (var weather in WeathersByPlayer)
+            CardManager.Instance.SendToGraveyard(weather.Key, weather.Value);
+        Debug.Log($"Clearing Card Played");
+    }
 
     /// <summary>
     /// When a card is to be destroyed it must be removed from the row, from the CardsOnField Dict 
     /// and send To graveyard This method encapsulate and abstract such process
     /// </summary>
     /// <param name="card">Card to be destroyed in the game</param>
-    /// <param name="CardsOnField"></param> <summary>
-    void DestroyUnitFrom(Unit unit, Dictionary<Card, Row> CardsOnField)
+    /// <param name="CardsOnField"></param> Dictionary in which the card's reference is kept<summary>
+    /// <param name="player"></param> Player to whom graveyard the card will be sent to <summary>
+    void DestroyUnitFrom(Unit unit, Dictionary<Card, Row> CardsOnField, Player player)
     {
         var row = CardsOnField[unit];
         CardsOnField.Remove(unit);
         row.RemoveUnit(unit);
-        CardManager.Instance.SendToGraveyard(unit);
+        CardManager.Instance.SendToGraveyard(unit, player);
     }
 }

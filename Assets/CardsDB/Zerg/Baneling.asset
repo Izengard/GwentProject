@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aff3eb8bbb2788c419a3ddd56ad5740b, type: 3}
-  m_Name: Baneling Nest
+  m_Name: Baneling
   m_EditorClassIdentifier: 
   Faction: Zerg
   FactionLogo: {fileID: 21300000, guid: 499affb651cbf71409ffb75ed7dbd04c, type: 3}
-  Name: Baneling Nest
-  effect: 5
-  Artwork: {fileID: 21300000, guid: f514f279386d5664d932b5bdc35fb03a, type: 3}
-  Description: 
+  Name: Baneling
+  effect: 7
+  Artwork: {fileID: 21300000, guid: a67030cae96d20140a8700debb06e144, type: 3}
+  Description: The Baneling is an explosive Zerg strain, evolved from the humble
+    Zergling. It serves as a suicide bomber unit, designed to wreak havoc on the
+    battlefield.
   UnitType: 0
-  Power: 6
-  AttackTypes: 02000000
+  Power: 3
+  AttackTypes: 00000000

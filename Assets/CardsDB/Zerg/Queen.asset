@@ -22,4 +22,4 @@ MonoBehaviour:
     accelerating creep growth'
   UnitType: 1
   Power: 7
-  AttackTypes: 0000000001000000
+  AttackTypes: 00000000

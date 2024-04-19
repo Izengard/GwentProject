@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ public class ReadyButton : MonoBehaviour
 {
     [SerializeField] Toggle[] factionButtons = new Toggle[3];
     [SerializeField] TMP_InputField nameInput;
-    //   [SerializeField] 
+
 
     public void DisableInteractions()
     {
@@ -18,5 +19,7 @@ public class ReadyButton : MonoBehaviour
             button.interactable = false;
         }
     }
+
+
 
 }

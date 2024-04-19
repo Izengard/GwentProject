@@ -19,41 +19,48 @@ public class TurnManager : MonoBehaviour
     {
         gameBoard = GameBoard.Instance;
     }
-    public void UpdateTurnPhase(TurnPhase newPhase)
+    public void UpdateTurnPhase(TurnPhase newPhase, float timeDelay = 0)
     {
         CurrentTurnPhase = newPhase;
-        HandleTurnPhase(newPhase);
+        HandleTurnPhase(newPhase, timeDelay);
     }
 
-    private void HandleTurnPhase(TurnPhase newPhase)
+    private void HandleTurnPhase(TurnPhase newPhase, float timeDelay)
     {
         Debug.Log($"{newPhase}");
-        switch (newPhase)
+        LeanTween.delayedCall(timeDelay, HandleNewPhase);
+        void HandleNewPhase()
         {
-            case TurnPhase.Draw:
-                CurrentTurnPhase = TurnPhase.Draw;
-                break;
-            case TurnPhase.Play:
-                CurrentTurnPhase = TurnPhase.Play;
-                GameStatusInfo.text = $"{currentPlayer.ToString().Replace('_', ' ')} turn, make a play!";
-                gameBoard.SetActivePlayer(currentPlayer, true);
-                break;
-            case TurnPhase.Summon:
-                CurrentTurnPhase = TurnPhase.Summon;
-                break;
-            case TurnPhase.SelectRow:
-                GameStatusInfo.text = $"Select a Row to summon your card to";
-                CurrentTurnPhase = TurnPhase.SelectRow;
-                break;
-            case TurnPhase.SelectCard:
-                GameStatusInfo.text = $"Select a card";
-                CurrentTurnPhase = TurnPhase.SelectCard;
-                break;
-            case TurnPhase.TurnEnd:
-                CurrentTurnPhase = TurnPhase.TurnEnd;
-                LeanTween.delayedCall(1f, () =>
-                    EndPlayerTurn());
-                break;
+            switch (newPhase)
+            {
+                case TurnPhase.Draw:
+                    gameBoard.SetActivePlayer(currentPlayer, true);
+                    CurrentTurnPhase = TurnPhase.Draw;
+                    int enemyPlayer = ((int)currentPlayer + 1) % 2;
+                    gameBoard.DealCards(currentPlayer, 2);
+                    gameBoard.DealCards((Player)enemyPlayer, 2);
+                    break;
+                case TurnPhase.Play:
+                    gameBoard.SetActivePlayer(currentPlayer, true);
+                    CurrentTurnPhase = TurnPhase.Play;
+                    GameStatusInfo.text = $"{currentPlayer.ToString().Replace('_', ' ')} turn, make a play!";
+                    break;
+                case TurnPhase.Summon:
+                    CurrentTurnPhase = TurnPhase.Summon;
+                    break;
+                case TurnPhase.SelectRow:
+                    GameStatusInfo.text = $"Select a Row to summon your card to";
+                    CurrentTurnPhase = TurnPhase.SelectRow;
+                    break;
+                case TurnPhase.SelectCard:
+                    GameStatusInfo.text = $"Select a card";
+                    CurrentTurnPhase = TurnPhase.SelectCard;
+                    break;
+                case TurnPhase.TurnEnd:
+                    CurrentTurnPhase = TurnPhase.TurnEnd;
+                    EndPlayerTurn();
+                    break;
+            }
         }
         Debug.Log($"{CurrentTurnPhase}");
     }

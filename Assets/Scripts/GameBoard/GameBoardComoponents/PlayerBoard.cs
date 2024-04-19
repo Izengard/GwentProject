@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,8 +17,8 @@ public class PlayerBoard : MonoBehaviour
     public void SetPlayerFaction(int playerNumber)
     {
         int[] selectedFactions = new int[2];
-        selectedFactions[0] = PlayerPrefs.GetInt("P1Faction",0);
-        selectedFactions[1] = PlayerPrefs.GetInt("P2Faction",1);
+        selectedFactions[0] = PlayerPrefs.GetInt("P1Faction", 0);
+        selectedFactions[1] = PlayerPrefs.GetInt("P2Faction", 1);
 
         var selectedFaction = selectedFactions[playerNumber];
         var leaderInfo = dataBase.LeadersDB[selectedFaction];
@@ -28,21 +27,22 @@ public class PlayerBoard : MonoBehaviour
         var deckData = dataBase.DecksDB[selectedFaction];
         deck.SetDeckData(deckData);
     }
-    
-    public async void DealCards(int n)
+
+    public void DealCards(int n)
     {
         for (int i = 0; i < n; i++)
         {
             var drawnCard = deck.Draw();
-            LeanTween.move(drawnCard.gameObject, hand.transform.position, 1f)
-            .setEaseOutQuad()
-            .setOnComplete(() => drawnCard.transform.SetParent(hand.transform, false));
-
             int handCount = hand.gameObject.transform.childCount;
-            if (handCount > 10 && GameManager.Instance.CurrentTurnPhase != TurnPhase.Draw)
-                CardManager.Instance.SendToGraveyard(drawnCard);
+            
+            if(GameManager.Instance.CurrentTurnPhase  == TurnPhase.Draw)
+                drawnCard.transform.SetParent(Hand.transform);
+            else
+                CardManager.Instance.MoveCardTo(drawnCard, Hand.transform);
 
-            await Task.Delay(1000);
+            if (handCount >= 10 && GameManager.Instance.CurrentTurnPhase != TurnPhase.Draw)
+                CardManager.Instance.SendToGraveyard(drawnCard, GameManager.Instance.currentPlayer);
+            drawnCard.transform.localScale = Vector3.one;
         }
     }
 

@@ -15,11 +15,11 @@ MonoBehaviour:
   Faction: Terran
   FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
   Name: Siege Tank
-  effect: 5
+  effect: 7
   Artwork: {fileID: 21300000, guid: ba8e8e99a3099b6479ce9ff45247c724, type: 3}
   Description: Mobile fortresses, Siege Tanks provide fire support, capable of obliterating
     targets from great distances. Exercise caution with friendly fire, as it's explosions
     show no discrimination.
-  UnitType: 0
+  UnitType: 1
   Power: 7
   AttackTypes: 02000000

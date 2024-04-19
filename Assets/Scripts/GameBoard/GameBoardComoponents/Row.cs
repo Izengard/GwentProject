@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,13 +10,13 @@ public class Row : MonoBehaviour
     public Transform RowUnitsTransform;
     public bool BuffIsActive { get; private set; }
     public bool WeatherIsActive { get; private set; }
-    public List<Unit> rowUnits { get; private set; } = new List<Unit>();
+    [field: SerializeField] public List<Unit> rowUnits { get; private set; } = new List<Unit>();
     [SerializeField] HighlightEffect highlightEffect;
     [SerializeField] TextMeshProUGUI PowerSubtotalScore;
     [SerializeField] GameObject WeatherEffect;
-    AttackType attackType;
+    [SerializeField] AttackType attackType;
     public AttackType AttackType => attackType;
-    int decoyCount = 0;
+    [SerializeField] int decoyCount = 0;
 
 
     public int PowerSubtotal
@@ -33,6 +32,7 @@ public class Row : MonoBehaviour
             return powerSubtotal;
         }
     }
+
     public int UnitsCount => rowUnits.Count + decoyCount;
 
 
@@ -62,12 +62,20 @@ public class Row : MonoBehaviour
                 silver.SetBuff();
     }
 
+    public void ResetBuff()
+    {
+        this.BuffIsActive = false;
+        foreach (var unit in rowUnits)
+            if (unit is SilverUnit silver)
+                silver.ResetBuff();
+    }
+
     public void ResetRow()
     {
+        ResetWeather();
+        ResetBuff();
+        ResetDecoys();
         rowUnits.Clear();
-        WeatherIsActive = false;
-        BuffIsActive = false;
-        decoyCount = 0;
     }
 
     public void HighlightOn() => this.highlightEffect.gameObject.SetActive(true);

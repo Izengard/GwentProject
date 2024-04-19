@@ -32,9 +32,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4461708701267945689}
-  - {fileID: 3692851590923278529}
   - {fileID: 7665092846785667334}
+  - {fileID: 3692851590923278529}
+  - {fileID: 4461708701267945689}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -238,9 +238,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4763541152335900425, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -7.6271057
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079195372468568194, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: attackType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6245525712473045768, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
       propertyPath: m_Name
       value: RangedRow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6563112589518030788, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.2026062
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878398528288072905, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_Color.b
+      value: 0.06546896
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878398528288072905, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878398528288072905, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_Color.r
+      value: 0.040880322
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -375,9 +399,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4763541152335900425, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -7.6271057
+      objectReference: {fileID: 0}
     - target: {fileID: 6245525712473045768, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
       propertyPath: m_Name
       value: MeleeRow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6563112589518030788, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.2026062
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -516,9 +548,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4763541152335900425, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -7.6271057
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079195372468568194, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: attackType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6245525712473045768, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
       propertyPath: m_Name
       value: SiegeRow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6563112589518030788, guid: d12cc92108d881744a4389e6c7fc8339, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.2026062
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

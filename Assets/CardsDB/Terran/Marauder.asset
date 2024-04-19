@@ -15,7 +15,7 @@ MonoBehaviour:
   Faction: Terran
   FactionLogo: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
   Name: Marauder
-  effect: 9
+  effect: 8
   Artwork: {fileID: 21300000, guid: d74d4f90cfc811749a1bb2b81d8e9229, type: 3}
   Description: "Clad in Armored Infantry Suit, the marauder is a walking fortress.Its
     armor provides protection against both ballistic and energy-based attacks.The
@@ -24,4 +24,4 @@ MonoBehaviour:
     carapaces and armor alike."
   UnitType: 0
   Power: 5
-  AttackTypes: 01000000
+  AttackTypes: 0000000001000000

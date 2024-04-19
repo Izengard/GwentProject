@@ -37,19 +37,23 @@ public class GameBoard : MonoBehaviour
         playerInfos[0].playerNick.text = PlayerPrefs.GetString("PlayerOneNick", "Player One").ToUpper();
         playerInfos[1].playerNick.text = PlayerPrefs.GetString("PlayerTwoNick", "Player Two").ToUpper();
     }
-    public void HidePlayerBoards()
+    public void HidePlayerHands()
     {
         for (int i = 0; i < 2; i++)
-            LeanTween.scaleX(PlayerBoards[i].gameObject, 0, .5f);
+            LeanTween.scaleY(PlayerBoards[i].Hand.gameObject, 0, 0f);
     }
 
     public void SetActivePlayer(Player currentPlayer, bool IsActive)
     {
         var playerBoard = PlayerBoards[(int)currentPlayer];
         if (IsActive)
-            LeanTween.scaleX(playerBoard.gameObject, 1f, 1.2f).setEaseOutBack();
+        {
+            LeanTween.scaleY(playerBoard.Hand.gameObject, 1f, 1f).setEaseOutBack();
+            playerBoard.Hand.transform.SetParent(this.transform);
+
+        }
         else
-            LeanTween.scaleX(playerBoard.gameObject, 0f, 1.2f);
+            LeanTween.scaleY(playerBoard.Hand.gameObject, 0f, 1.2f);
     }
 
     // Behavior
@@ -116,8 +120,8 @@ public class GameBoard : MonoBehaviour
         }
         else
         {
-            playerInfos[1].PlayerPower.color = Color.black;
-            playerInfos[0].PlayerPower.color = Color.black;
+            playerInfos[1].PlayerPower.color = Color.white;
+            playerInfos[0].PlayerPower.color = Color.white;
         }
     }
 }

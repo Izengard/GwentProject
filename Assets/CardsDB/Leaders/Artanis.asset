@@ -16,5 +16,7 @@ MonoBehaviour:
   FactionLogo: {fileID: 21300000, guid: ad5b5bc5d41599d4eaf637111acb0963, type: 3}
   Name: Exarch  Artanis
   effect: 11
-  Artwork: {fileID: 21300000, guid: d3a60b754d5a7ac45a6fe700ff90a675, type: 3}
-  Description: 
+  Artwork: {fileID: 21300000, guid: 23de5d5cdcd84174c95b1472f3db6580, type: 3}
+  Description: Artanis, the noble leader of the Daelaam, stands as a renowned warrior
+    within the Protoss race in the StarCraft universe. His unwavering determination
+    drives him to unify his divided people and restore the glory of the Protoss civilization.
