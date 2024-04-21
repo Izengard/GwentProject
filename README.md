@@ -12,8 +12,8 @@ While they are supported by their own technological prowess (Buff cards), they a
 For a more detailed description of the game refer to the user manual at : [link]
 
 ## Software Details: 
-The game was developes with Unity 2022 which inherently uses C# as programming language
-And Visual Studio Code 2024 was used text editor
+* The game was developed with Unity 2022 which inherently uses C# as programming language
+* Visual Studio Code 2024 was used  as text editor.
 
 ### Author : 
 * Jocdan Lismar López Mantecón
