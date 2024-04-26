@@ -1,13 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using static LeanTween;
-using UnityEngine.SocialPlatforms;
-using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
@@ -16,7 +10,7 @@ public enum Player { PlayerOne, PlayerTwo }
 
 public class GameManager : MonoBehaviour
 {
-    // Singleton Pattern GameManger Instance
+    // Singleton GameManger Instance
     public static GameManager Instance { get; private set; }
 
     // Frontend Components
@@ -26,7 +20,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject VictoryPanel;
     [SerializeField] TextMeshProUGUI VictoryText;
     [SerializeField] TurnManager turnManager;
-
 
     // Logic fields
     [field: SerializeField] public GameState GameState { get; private set; }
@@ -43,10 +36,11 @@ public class GameManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
         PlayerNames = new string[2]{PlayerPrefs.GetString("PlayerOneNick", "Player One"),
-                            PlayerPrefs.GetString("PlayerTwoNick", "Player Two")};
+                                    PlayerPrefs.GetString("PlayerTwoNick", "Player Two")};
 
         UpdateGameState(GameState.Start);
     }
+    
     void Start()
     {
         gameBoard = GameBoard.Instance;
@@ -75,7 +69,6 @@ public class GameManager : MonoBehaviour
 
     public void WaitForRowSelection() => UpdateTurnPhase(TurnPhase.SelectRow);
     public void WaitForCardSelection() => UpdateTurnPhase(TurnPhase.SelectCard);
-
 
     // State Management
     public void UpdateGameState(GameState newState)
@@ -163,21 +156,20 @@ public class GameManager : MonoBehaviour
     {
         Player? winner;
 
-        Debug.Log($"{gameBoard.PlayerBattlefields[0].FieldPower} vs {gameBoard.PlayerBattlefields[1].FieldPower}");
         if (gameBoard.PlayerBattlefields[0].FieldPower > gameBoard.PlayerBattlefields[1].FieldPower)
         {
             winner = Player.PlayerOne;
-            DisplayDialogMessage($"{PlayerNames[0]} has won the Round");
+            DisplayDialogMessage($"{PlayerNames[0]} wins the Round");
         }
         else if (gameBoard.PlayerBattlefields[0].FieldPower < gameBoard.PlayerBattlefields[1].FieldPower)
         {
             winner = Player.PlayerTwo;
-            DisplayDialogMessage($"{PlayerNames[1]} has won the Round");
+            DisplayDialogMessage($"{PlayerNames[1]} wins the Round");
         }
         else
         {
             winner = null;
-            DisplayDialogMessage($"The Round ended in DRAW");
+            DisplayDialogMessage($"The Round is DRAW");
         }
         Debug.Log($"{winner}");
 
@@ -192,9 +184,9 @@ public class GameManager : MonoBehaviour
         if (VictoryPoints.Sum() == 0)
             VictoryText.text = $"Game is Draw";
         else if (VictoryPoints[0] != 0)
-            VictoryText.text = $"{PlayerNames[0]} Has Won the Game";
+            VictoryText.text = $"{PlayerNames[0]} Wins";
         else if (VictoryPoints[1] != 0)
-            VictoryText.text = $"{PlayerNames[1]} Has Won the Game";
+            VictoryText.text = $"{PlayerNames[1]} Wins";
 
         delayedCall(3.5f, () =>
         SceneManager.LoadScene("MainMenu"));

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -140,5 +139,4 @@ public class EffectManager : MonoBehaviour
             CardManager.Instance.SendToGraveyard(weather);
         Debug.Log($"Clearing Card Played");
     }
-
 }

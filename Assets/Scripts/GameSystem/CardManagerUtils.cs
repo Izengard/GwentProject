@@ -25,14 +25,14 @@ public partial class CardManager : MonoBehaviour
    void HighlightCard(Card card)
    {
       card.transform.LeanScale(new Vector2(1.2f, 1.2f), 1f).setEase(LeanTweenType.easeOutBounce);
-      card.GetComponent<CardControls>().enabled = false;
+      card.GetComponent<CardScaling>().enabled = false;
 
    }
 
    public void HighlightCardOff(Card card)
    {
       card.transform.LeanScale(Vector2.one, 1f);
-      card.GetComponent<CardControls>().enabled = true;
+      card.GetComponent<CardScaling>().enabled = true;
    }
 
    void HighlightAllSilverUnits(bool activate)

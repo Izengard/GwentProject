@@ -25,19 +25,18 @@ public partial class CardManager
    {
       if (Instance == null) Instance = this;
       else if (Instance != this) Destroy(gameObject);
-
    }
 
-      public void SummonCard(Card card)
+   public void SummonCard(Card card)
    {
       if (GameManager.Instance.CurrentTurnPhase != TurnPhase.Summon) return;
 
       PlayCardAudio(card);
 
-      if (card is SpecialCard special)
-         SummonSpecialCard(special);
-      else if (card is Unit unit)
+      if (card is Unit unit)
          SummonUnitCard(unit);
+      else if (card is SpecialCard special)
+         SummonSpecialCard(special);
    }
 
    void SummonUnitCard(Unit unit)
@@ -60,80 +59,28 @@ public partial class CardManager
 
    void SummonSpecialCard(SpecialCard special)
    {
-      Transform newPosition;
-      switch (special.cardInfo.SpecialType)
+      switch (special.SpecialCardInfo.SpecialType)
       {
-         case SpecialType.Blizzard:
-            if (gameBoard.IsWeatherActive(Weather.Blizzard))
-            {
-               GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
-               return;
-            }
-            ActiveWeathers.Add(special);
-            newPosition = gameBoard.Weathers.Blizzard.transform;
-            gameBoard.SetWeather(Weather.Blizzard);
-            Debug.Log($" Blizzard Card Summoned");
-            break;
-
-         case SpecialType.Fog:
-            if (gameBoard.IsWeatherActive(Weather.Fog))
-            {
-               GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
-               return;
-            }
-            ActiveWeathers.Add(special);
-            newPosition = gameBoard.Weathers.Fog.transform;
-            gameBoard.SetWeather(Weather.Fog);
-            Debug.Log($"Fog Card Summoned");
-            break;
-
-         case SpecialType.Rain:
-            if (gameBoard.IsWeatherActive(Weather.Rain))
-            {
-               GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
-               return;
-            }
-            ActiveWeathers.Add(special);
-            newPosition = gameBoard.Weathers.Rain.transform;
-            gameBoard.SetWeather(Weather.Rain);
-            Debug.Log($"Rain Card Summoned");
-            break;
-
          case SpecialType.Clearing:
-            newPosition = graveyards[(int)currentPlayer];
+            SendToGraveyard(special);
             effectManager.ActivateEffect(Effect.Clearing);
             break;
-
          case SpecialType.Buff:
-            newPosition = null;
             AskForPlayerInput(special);
             GameManager.Instance.WaitForRowSelection();
-            Debug.Log($"Buff Card Selected");
             break;
-
          case SpecialType.Decoy:
             if (!AnySilverUnit())
             {
                GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
                return;
             }
-
             AskForPlayerInput(special);
             GameManager.Instance.WaitForCardSelection();
-            newPosition = null;
-            Debug.Log($"Decoy Card Selected");
             break;
-
          default:
-            newPosition = null;
-            Debug.Log($"No Valid Card Type detected");
+            SummonWeather(special);
             break;
-      }
-
-      if (newPosition != null)
-      {
-         MoveCardTo(special, newPosition);
-         GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd);
       }
    }
 
@@ -156,6 +103,27 @@ public partial class CardManager
          ActivateEffect(unit));
       GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd, effectTimeDelay + cardMoveDuration);
    }
+
+   void SummonWeather(SpecialCard special)
+   {
+      Weather weather;
+      if (special.SpecialCardInfo.SpecialType == SpecialType.Blizzard)
+         weather = Weather.Blizzard;
+      else if (special.SpecialCardInfo.SpecialType == SpecialType.Fog)
+         weather = Weather.Fog;
+      else //if(special.SpecialCardInfo.SpecialType == SpecialType.Rain)
+         weather = Weather.Rain;
+
+      if (gameBoard.IsWeatherActive(weather))
+      {
+         GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
+         return;
+      }
+      ActiveWeathers.Add(special);
+      gameBoard.SetWeather(Weather.Blizzard);
+      Debug.Log($" Blizzard Card Summoned");
+   }
+
    public void HandleRowSelection(Row row)
    {
       HighlightCardOff(pendingCard);
