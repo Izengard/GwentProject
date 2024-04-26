@@ -4,19 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using static LeanTween;
 
-public class Weathers : MonoBehaviour
+public class WeathersRow : MonoBehaviour
 {
-    [SerializeField] GameObject[] weathers;
+    [SerializeField] GameObject[] weathersSprites;
     [SerializeField] CanvasGroup clearingEffect;
-    public GameObject Blizzard => weathers[0];
-    public GameObject Fog => weathers[1];
-    public GameObject Rain => weathers[2];
+    public GameObject Blizzard => weathersSprites[0];
+    public GameObject Fog => weathersSprites[1];
+    public GameObject Rain => weathersSprites[2];
 
-    public void ClearingEffect()
+
+    public void ClearingAnimation()
     {
         clearingEffect.gameObject.SetActive(true);
         StartCoroutine(BlinkAndBanish(clearingEffect));
-
     }
 
     public static IEnumerator BlinkAndBanish(CanvasGroup image)
@@ -40,6 +40,5 @@ public class Weathers : MonoBehaviour
             startAlpha = endAlpha;
             endAlpha = temp;
         }
-
     }
 }

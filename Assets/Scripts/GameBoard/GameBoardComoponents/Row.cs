@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -70,6 +71,12 @@ public class Row : MonoBehaviour
                 silver.ResetBuff();
     }
 
+    public void DestroyAllSilverUnits()
+    {
+        foreach (var unit in rowUnits)
+            if (unit is SilverUnit silverUnit)
+                CardManager.Instance.DestroyUnit(silverUnit);
+    }
     public void ResetRow()
     {
         ResetWeather();

@@ -211,7 +211,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -3}
+  m_AnchoredPosition: {x: 0, y: -33}
   m_SizeDelta: {x: 208.554, y: 74.65399}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4640233118469840199
@@ -548,7 +548,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player Two Nick:'
+  m_text: 'Player Two Name :'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
@@ -1228,6 +1228,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zerg
       objectReference: {fileID: 0}
+    - target: {fileID: 5903337238600162122, guid: d9773f0280858ce42a5e6e23c890704f, type: 3}
+      propertyPath: m_text
+      value: Zerg
+      objectReference: {fileID: 0}
     - target: {fileID: 7931399569715661005, guid: d9773f0280858ce42a5e6e23c890704f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1358,6 +1362,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 964429611642749656, guid: d9773f0280858ce42a5e6e23c890704f, type: 3}
       propertyPath: m_Name
+      value: Protoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 5903337238600162122, guid: d9773f0280858ce42a5e6e23c890704f, type: 3}
+      propertyPath: m_text
       value: Protoss
       objectReference: {fileID: 0}
     - target: {fileID: 5940069404869304212, guid: d9773f0280858ce42a5e6e23c890704f, type: 3}
@@ -1518,6 +1526,10 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: a5a8c768b42cfaf46aa4488d120a2e42, type: 3}
     - target: {fileID: 964429611642749656, guid: d9773f0280858ce42a5e6e23c890704f, type: 3}
       propertyPath: m_Name
+      value: Terran
+      objectReference: {fileID: 0}
+    - target: {fileID: 5903337238600162122, guid: d9773f0280858ce42a5e6e23c890704f, type: 3}
+      propertyPath: m_text
       value: Terran
       objectReference: {fileID: 0}
     - target: {fileID: 7931399569715661005, guid: d9773f0280858ce42a5e6e23c890704f, type: 3}

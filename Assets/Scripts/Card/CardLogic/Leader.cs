@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Leader : MonoBehaviour, IPointerEnterHandler
 {
-    [SerializeField] LeaderInfo leaderInfo;
+    public LeaderInfo LeaderInfo { get; private set; }
     [SerializeField] Image Artwork;
     [SerializeField] Image FactionLogo;
     [SerializeField] Button LeaderButton;
@@ -15,28 +15,28 @@ public class Leader : MonoBehaviour, IPointerEnterHandler
 
     void Start()
     {
-        gameObject.name = leaderInfo.name;
-        Artwork.sprite = leaderInfo.Artwork;
-        FactionLogo.sprite = leaderInfo.FactionLogo;
+        gameObject.name = LeaderInfo.name;
+        Artwork.sprite = LeaderInfo.Artwork;
+        FactionLogo.sprite = LeaderInfo.FactionLogo;
     }
 
-    public void SetLeaderInfo(LeaderInfo leaderInfo)
+    public void SetLeaderInfo(LeaderInfo LeaderInfo)
     {
-        this.leaderInfo = leaderInfo;
+        this.LeaderInfo = LeaderInfo;
     }
 
     public void ActivateEffect()
     {
-        effectIsAvailable = false;   
+        effectIsAvailable = false;
         Debug.Log($"LeaderEffect");
-        CardManager.Instance.ActivateEffect(leaderInfo.effect);
-        GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd,1);
+        CardManager.Instance.ActivateLeaderEffect(this);
+        GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd, 1);
     }
 
     public void ResetEffect() => effectIsAvailable = true;
     public void OnPointerEnter(PointerEventData eventData)
     {
-        InfoDisplay.Instance.DisplayCardInfo(this.leaderInfo);
+        InfoDisplay.Instance.DisplayCardInfo(this.LeaderInfo);
     }
 
     void Update()

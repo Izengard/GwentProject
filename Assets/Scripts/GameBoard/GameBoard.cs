@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Weather { Blizzard, Fog, Rain }
+
 public class GameBoard : MonoBehaviour
 {
     // Singleton Pattern
@@ -11,9 +13,8 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private Battlefield[] playerBattlefields;
     [SerializeField] private PlayerBoard[] playerBoards;
     [SerializeField] private PlayerInfo[] playerInfos;
-    [SerializeField] Weathers weathers;
+    [SerializeField] WeathersRow weathersRow;
     [SerializeField] Button passButton;
-    public enum Weather { Blizzard, Fog, Rain }
 
     private bool[] isWeatherActive = new bool[3];
     public bool IsWeatherActive(Weather weather) => isWeatherActive[(int)weather];
@@ -21,7 +22,7 @@ public class GameBoard : MonoBehaviour
     //Accesors
     public Battlefield[] PlayerBattlefields => playerBattlefields;
     public PlayerBoard[] PlayerBoards => playerBoards;
-    public Weathers Weathers => weathers;
+    public WeathersRow Weathers => weathersRow;
 
     // Frontend
     void Awake()
@@ -65,6 +66,7 @@ public class GameBoard : MonoBehaviour
             playerBattlefields[i].ResetField();
             playerBoards[i].ResetLeaderEffect();
         }
+        ResetWeather();
 
     }
     public void SetWeather(Weather weather)
@@ -77,8 +79,7 @@ public class GameBoard : MonoBehaviour
     }
     public void ResetWeather()
     {
-
-        weathers.ClearingEffect();
+        weathersRow.ClearingAnimation();
         for (int i = 0; i < 3; i++)
         {
             isWeatherActive[i] = false;

@@ -7,24 +7,26 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-    GameBoard gameBoard => GameBoard.Instance;
     Player currentPlayer => GameManager.Instance.currentPlayer;
     int enemyPlayer => ((int)currentPlayer + 1) % 2;
-    Dictionary<Card, Row>[] SummonedCardsByRow => CardManager.Instance.CardsOnPlayerField;
-    Dictionary<SpecialCard, Player> WeathersByPlayer => CardManager.Instance.WeathersByPlayer;
+    Dictionary<Card, Row> SummonedCardsByRow => CardManager.Instance.SummonedCardsByRow;
+    List<SpecialCard> WeathersByPlayer => CardManager.Instance.ActiveWeathers;
+    Action<Unit> DestroyUnit => CardManager.Instance.DestroyUnit;
 
+    public void ActivateUnitEffect(Unit unit) => ActivateEffect(unit.CardInfo.effect, unit);
+    public void ActivateLeaderEffect(Leader leader) => ActivateEffect(leader.LeaderInfo.effect);
 
-    public void ActivateEffect(Effect effect)
+    public void ActivateEffect(Effect effect, Unit unit = null)
     {
         switch (effect)
         {
             case Effect.Draw:
-                gameBoard.DealCards(currentPlayer, 1);
+                GameBoard.Instance.DealCards(currentPlayer, 1);
                 break;
-            case Effect.DestroyGreaterUnit:
-                DestroyGreaterUnit();
+            case Effect.DestroyStrongestUnit:
+                DestroyStrongestUnit();
                 break;
-            case Effect.DestroyLesserUnit:
+            case Effect.DestroyWeakestUnit:
                 DestroyLesserUnit();
                 break;
             case Effect.DestroyLesserRow:
@@ -34,13 +36,16 @@ public class EffectManager : MonoBehaviour
                 BalanceFieldPower();
                 break;
             case Effect.MultiplyPower:
-                MultiplyPower();
+                MultiplyPower(unit);
                 break;
             case Effect.SetBuff:
-                SetBuff();
+                var row = SummonedCardsByRow[unit];
+                row.ActivateBuff();
                 break;
             case Effect.SetWeather:
-                SetWeather();
+                row = SummonedCardsByRow[unit];
+                var weather = (Weather)(int)row.AttackType;
+                GameBoard.Instance.SetWeather(weather);
                 break;
             case Effect.Clearing:
                 Clearing();
@@ -48,136 +53,92 @@ public class EffectManager : MonoBehaviour
         }
     }
 
-    void DestroyGreaterUnit()
+    void DestroyStrongestUnit()
     {
-        int maxPower = 0;
-        foreach (Dictionary<Card, Row> summonedCards in SummonedCardsByRow)
-            foreach (Card card in summonedCards.Keys)
-                if (card is SilverUnit silverUnit)
-                    maxPower = Math.Max(maxPower, silverUnit.Power);
+        var silverUnits = SummonedCardsByRow.Keys
+                        .OfType<SilverUnit>() // Filters and casts to SilverUnit
+                        .ToArray();
 
-        for (int i = 0; i < SummonedCardsByRow.Length; i++)
-        {
-            var summonedCards = SummonedCardsByRow[i];
-            for (int j = summonedCards.Keys.Count - 1; j >= 0; j--)
-            {
-                var unit = summonedCards.Keys.ElementAt(j);
-                if (unit is SilverUnit silverUnit && silverUnit.Power == maxPower)
-                    DestroyUnitFrom((Unit)unit, summonedCards, (Player)i);
-            }
-        }
+        int maxPower = 0;
+        foreach (SilverUnit unit in silverUnits)
+            maxPower = Math.Max(maxPower, unit.Power);
+
+        foreach (SilverUnit unit in silverUnits)
+            if (unit.Power == maxPower)
+                DestroyUnit(unit);
+
     }
 
     void DestroyLesserUnit()
     {
-        int minPower = int.MaxValue;
-        var enemyCards = SummonedCardsByRow[enemyPlayer];
-        foreach (Card card in enemyCards.Keys)
-            if (card is SilverUnit silverUnit)
-                minPower = Math.Min(minPower, silverUnit.Power);
+        var enemyUnits = SummonedCardsByRow.Keys
+                        .OfType<SilverUnit>()
+                        .Where(card => card.Owner == (Player)enemyPlayer)
+                        .ToArray();
 
-        for (int i = enemyCards.Count - 1; i >= 0; i--)
-        {
-            var unit = enemyCards.Keys.ElementAt(i);
-            if (unit is SilverUnit silverUnit && silverUnit.Power == minPower)
-                DestroyUnitFrom((Unit)unit, enemyCards, (Player)enemyPlayer);
-        }
+        int minPower = int.MaxValue;
+        foreach (var unit in enemyUnits)
+            minPower = Math.Min(minPower, unit.Power);
+
+        foreach (SilverUnit unit in enemyUnits)
+            if (unit.Power == minPower)
+                DestroyUnit(unit);
     }
 
     void DestroyLesserRow()
     {
         // Determinate the min count
         int minUnitCount = int.MaxValue;
-        foreach (Dictionary<Card, Row> summonedCards in SummonedCardsByRow)
-            foreach (Row row in summonedCards.Values)
-                minUnitCount = Math.Min(minUnitCount, row.UnitsCount);
-        print($"minUnitCount {minUnitCount}");
+        foreach (Row row in SummonedCardsByRow.Values)
+            minUnitCount = Math.Min(minUnitCount, row.UnitsCount);
 
-        // Destroy all the the silver units from the rows wich UnitCount equals to minCount
-        for (int i = 0; i < SummonedCardsByRow.Length; i++)
+        // Destroy all the the silver units from the rows whose UnitCount equals minCount
+        foreach (Row row in SummonedCardsByRow.Values.ToArray())
         {
-            Dictionary<Card, Row> summonedCards = SummonedCardsByRow[i];
-            var activeRows = summonedCards.Values.ToArray();
-            for (int j = activeRows.Length - 1; j >= 0; j--)
-            {
-                var row = summonedCards.Values.ElementAt(j);
-                if (row.UnitsCount == minUnitCount)
-                {
-                    Debug.Log($"{row.UnitsCount}");
-                    for (int k = 0; k < row.UnitsCount; k++)
-                        if (row.rowUnits[k] is SilverUnit silver)
-                            DestroyUnitFrom(silver, summonedCards, (Player)i);
-
-                    row.ResetDecoys();
-                }
-            }
-
+            if (row.UnitsCount == minUnitCount)
+                row.DestroyAllSilverUnits();
         }
     }
+
     void BalanceFieldPower()
     {
         int average = 0, count = 0;
-        foreach (var summonedCards in SummonedCardsByRow)
-            foreach (var card in summonedCards.Keys)
-                if (card is Unit unit) { average += unit.Power; count++; }
+        foreach (var card in SummonedCardsByRow.Keys)
+            if (card is Unit unit) { average += unit.Power; count++; }
 
+        if (count == 0) return;
         average /= count;
 
-        foreach (var summonedCards in SummonedCardsByRow)
-            foreach (var card in summonedCards.Keys)
-                if (card is SilverUnit silverUnit)
-                    silverUnit.Power = average;
+        foreach (var card in SummonedCardsByRow.Keys)
+            if (card is SilverUnit silverUnit)
+                silverUnit.Power = average;
     }
-    void MultiplyPower()
+    void MultiplyPower(Unit unit)
     {
-        var cardName = SummonedCardsByRow[(int)currentPlayer].Last().Key.CardInfo.Name;
-        Debug.Log($"{cardName}");
+        var cardName = unit.CardInfo.Name;
 
-        var row = SummonedCardsByRow[(int)currentPlayer].Last().Value;
+        var row = SummonedCardsByRow[unit];
         int count = 0;
 
-        foreach (var unit in row.rowUnits)
-            if (unit.CardInfo.Name == cardName)
-            {
+        foreach (var rowUnit in row.rowUnits)
+            if (rowUnit.CardInfo.Name == cardName)
                 count++;
-                Debug.Log($"{unit.CardInfo.Name}");
-            }
 
-        foreach (var unit in row.rowUnits)
-            if (unit is SilverUnit silver && unit.CardInfo.Name == cardName)
+        foreach (var rowUnit in row.rowUnits)
+            if (rowUnit is SilverUnit silver && silver.CardInfo.Name == cardName)
                 silver.Power = count * unit.UnitCardInfo.Power;
     }
     void SetBuff()
     {
-        var row = SummonedCardsByRow[(int)currentPlayer].Last().Value;
-        row.ActivateBuff();
+        
     }
-    void SetWeather()
-    {
-        var row = SummonedCardsByRow[(int)currentPlayer].Last().Value;
-        int weatherIndex = (int)row.AttackType;
-        gameBoard.SetWeather((GameBoard.Weather)weatherIndex);
-    }
+
     public void Clearing()
     {
-        gameBoard.ResetWeather();
+        GameBoard.Instance.ResetWeather();
         foreach (var weather in WeathersByPlayer)
-            CardManager.Instance.SendToGraveyard(weather.Key, weather.Value);
+            CardManager.Instance.SendToGraveyard(weather);
         Debug.Log($"Clearing Card Played");
     }
 
-    /// <summary>
-    /// When a card is to be destroyed it must be removed from the row, from the CardsOnField Dict 
-    /// and send To graveyard This method encapsulate and abstract such process
-    /// </summary>
-    /// <param name="card">Card to be destroyed in the game</param>
-    /// <param name="CardsOnField"></param> Dictionary in which the card's reference is kept<summary>
-    /// <param name="player"></param> Player to whom graveyard the card will be sent to <summary>
-    void DestroyUnitFrom(Unit unit, Dictionary<Card, Row> CardsOnField, Player player)
-    {
-        var row = CardsOnField[unit];
-        CardsOnField.Remove(unit);
-        row.RemoveUnit(unit);
-        CardManager.Instance.SendToGraveyard(unit, player);
-    }
 }

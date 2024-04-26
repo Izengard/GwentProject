@@ -8,8 +8,10 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 {
     protected bool cardIsInHand = true;
     public abstract CardInfo CardInfo { get; }
-
     public abstract void SetCardInfo(CardInfo cardInfo);
+    public Player Owner { get; set; }
+    public void SetOwnerPlayer(Player player) => Owner = player;
+
 
     public void OnPointerClick(PointerEventData eventData)
     {

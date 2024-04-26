@@ -41,7 +41,7 @@ public class PlayerBoard : MonoBehaviour
                 CardManager.Instance.MoveCardTo(drawnCard, Hand.transform);
 
             if (handCount >= 10 && GameManager.Instance.CurrentTurnPhase != TurnPhase.Draw)
-                CardManager.Instance.SendToGraveyard(drawnCard, GameManager.Instance.currentPlayer);
+                CardManager.Instance.SendToGraveyard(drawnCard);
             drawnCard.transform.localScale = Vector3.one;
         }
     }

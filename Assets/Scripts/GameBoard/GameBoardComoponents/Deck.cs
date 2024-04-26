@@ -36,6 +36,7 @@ public class Deck : MonoBehaviour
         var cardInfo = DeckCards.Last();
         DeckCards.RemoveAt(DeckCards.Count - 1);
         var drawnCard = cardGenerator.InstantiateCard(cardInfo);
+        drawnCard.SetOwnerPlayer(GameManager.Instance.currentPlayer);
         return drawnCard;
     }
 
