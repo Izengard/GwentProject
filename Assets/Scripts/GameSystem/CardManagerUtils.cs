@@ -1,7 +1,5 @@
 using static LeanTween;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 
 public partial class CardManager : MonoBehaviour
@@ -15,8 +13,13 @@ public partial class CardManager : MonoBehaviour
    void AskForPlayerInput(Card pendingCard)
    {
       this.pendingCard = pendingCard;
-      HighlightCard(pendingCard);
-      currentField.HighlightRows(pendingCard);
+      if (pendingCard is SpecialCard special && special.SpecialCardInfo.SpecialType == SpecialType.Decoy)
+         HighlightSilverUnits(true);
+      else
+      {
+         HighlightCard(pendingCard);
+         currentField.HighlightRows(pendingCard);
+      }
       CancelButton.gameObject.SetActive(true);
    }
 
@@ -31,11 +34,11 @@ public partial class CardManager : MonoBehaviour
 
    public void HighlightCardOff(Card card)
    {
-      card.transform.LeanScale(Vector2.one, 1f);
+      card.transform.LeanScale(Vector2.one, .7f);
       card.GetComponent<CardScaling>().enabled = true;
    }
 
-   void HighlightAllSilverUnits(bool activate)
+   void HighlightSilverUnits(bool activate)
    {
       foreach (var card in SummonedCardsByRow.Keys)
       {
@@ -48,8 +51,10 @@ public partial class CardManager : MonoBehaviour
    public void CancelCardSelection()
    {
       CancelButton.gameObject.SetActive(false);
+      HighlightCardOff(pendingCard);
+      pendingCard.SetBackToHand();
       pendingCard = null;
-      HighlightAllSilverUnits(false);
+      HighlightSilverUnits(false);
       currentField.HighlightRowsOff();
       GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
    }

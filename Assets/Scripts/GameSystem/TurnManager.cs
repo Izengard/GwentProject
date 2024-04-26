@@ -43,7 +43,7 @@ public class TurnManager : MonoBehaviour
                 case TurnPhase.Play:
                     gameBoard.SetActivePlayer(currentPlayer, true);
                     CurrentTurnPhase = TurnPhase.Play;
-                    GameStatusInfo.text = $"{currentPlayer.ToString().Replace('_', ' ')} turn, make a play!";
+                    GameStatusInfo.text = $"{currentPlayer.ToString()} turn, make a play!";
                     break;
                 case TurnPhase.Summon:
                     CurrentTurnPhase = TurnPhase.Summon;

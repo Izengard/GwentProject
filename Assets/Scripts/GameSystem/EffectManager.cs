@@ -92,10 +92,11 @@ public class EffectManager : MonoBehaviour
             minUnitCount = Math.Min(minUnitCount, row.UnitsCount);
 
         // Destroy all the the silver units from the rows whose UnitCount equals minCount
-        foreach (Row row in SummonedCardsByRow.Values.ToArray())
+        var activeRows = SummonedCardsByRow.Values.ToArray();
+        for (int i = 0; i < activeRows.Length; i++)
         {
-            if (row.UnitsCount == minUnitCount)
-                row.DestroyAllSilverUnits();
+            if (activeRows[i].UnitsCount == minUnitCount)
+                activeRows[i].DestroyAllSilverUnits();
         }
     }
 
@@ -126,10 +127,6 @@ public class EffectManager : MonoBehaviour
         foreach (var rowUnit in row.rowUnits)
             if (rowUnit is SilverUnit silver && silver.CardInfo.Name == cardName)
                 silver.Power = count * unit.UnitCardInfo.Power;
-    }
-    void SetBuff()
-    {
-        
     }
 
     public void Clearing()

@@ -6,11 +6,11 @@ using static LeanTween;
 
 public class WeathersRow : MonoBehaviour
 {
-    [SerializeField] GameObject[] weathersSprites;
+    [SerializeField] GameObject[] weatherSlots;
     [SerializeField] CanvasGroup clearingEffect;
-    public GameObject Blizzard => weathersSprites[0];
-    public GameObject Fog => weathersSprites[1];
-    public GameObject Rain => weathersSprites[2];
+    public GameObject Blizzard => weatherSlots[0];
+    public GameObject Fog => weatherSlots[1];
+    public GameObject Rain => weatherSlots[2];
 
 
     public void ClearingAnimation()

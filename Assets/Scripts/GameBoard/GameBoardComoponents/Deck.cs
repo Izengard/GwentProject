@@ -9,12 +9,16 @@ public class Deck : MonoBehaviour
     [SerializeField] private List<CardInfo> DeckCards;
     [SerializeField] private CardGenerator cardGenerator;
     [SerializeField] AudioSource SoundEffect;
+    Player ownerPlayer;
 
     public void SetDeckData(DeckData deckData)
     {
         DeckCards = new List<CardInfo>(deckData.CardList);
         Shuffle();
     }
+
+    public void SetOwnerPlayer(Player owner) => this.ownerPlayer = owner;
+
 
     public void Shuffle()
     {
@@ -36,7 +40,7 @@ public class Deck : MonoBehaviour
         var cardInfo = DeckCards.Last();
         DeckCards.RemoveAt(DeckCards.Count - 1);
         var drawnCard = cardGenerator.InstantiateCard(cardInfo);
-        drawnCard.SetOwnerPlayer(GameManager.Instance.currentPlayer);
+        drawnCard.SetOwnerPlayer(this.ownerPlayer);
         return drawnCard;
     }
 

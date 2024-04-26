@@ -22,13 +22,12 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterH
             Debug.Log(GameManager.Instance.CurrentTurnPhase);
         }
         else if (GameManager.Instance.GameState == GameState.Start)
-        {
             InitialHandPanel.Instance.ChangeThisCard(this);
-        }
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
-    {
-        InfoDisplay.Instance.DisplayCardInfo(this.CardInfo);
-    }
+        => InfoDisplay.Instance.DisplayCardInfo(this.CardInfo);
+
+    public void SetBackToHand() => cardIsInHand = true;
 }

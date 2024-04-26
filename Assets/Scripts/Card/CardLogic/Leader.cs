@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Leader : MonoBehaviour, IPointerEnterHandler
 {
-    public LeaderInfo LeaderInfo { get; private set; }
+    [field: SerializeField] public LeaderInfo LeaderInfo { get; private set; }
     [SerializeField] Image Artwork;
     [SerializeField] Image FactionLogo;
     [SerializeField] Button LeaderButton;

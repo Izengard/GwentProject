@@ -1,7 +1,6 @@
 using static LeanTween;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using UnityEngine.UI;
 
 public partial class CardManager
@@ -64,14 +63,17 @@ public partial class CardManager
          case SpecialType.Clearing:
             SendToGraveyard(special);
             effectManager.ActivateEffect(Effect.Clearing);
+            GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd, cardMoveDuration);
             break;
          case SpecialType.Buff:
             AskForPlayerInput(special);
             GameManager.Instance.WaitForRowSelection();
             break;
          case SpecialType.Decoy:
+            Debug.Log($"DecoyActivated");
             if (!AnySilverUnit())
             {
+               Debug.Log(!AnySilverUnit());
                GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
                return;
             }
@@ -92,9 +94,9 @@ public partial class CardManager
       MoveCardTo(unit, row.RowUnitsTransform);
       CheckRowPowerMods(unit, row);
 
-      float effectTimeDelay = cardMoveDuration;
+      float effectTimeDelay = cardMoveDuration + .1f;
       if (unit.CardInfo.effect == Effect.Null || unit.CardInfo.effect == Effect.Versatile
-         || unit.CardInfo.effect == Effect.MultiplyPower)
+         || unit.CardInfo.effect == Effect.MultiplyPower || unit.CardInfo.effect == Effect.SetBuff)
       {
          effectTimeDelay = 0f;
       }
@@ -107,21 +109,33 @@ public partial class CardManager
    void SummonWeather(SpecialCard special)
    {
       Weather weather;
+      Transform newPosition;
       if (special.SpecialCardInfo.SpecialType == SpecialType.Blizzard)
+      {
          weather = Weather.Blizzard;
+         newPosition = gameBoard.Weathers.Blizzard.transform;
+      }
       else if (special.SpecialCardInfo.SpecialType == SpecialType.Fog)
+      {
          weather = Weather.Fog;
+         newPosition = gameBoard.Weathers.Fog.transform;
+      }
       else //if(special.SpecialCardInfo.SpecialType == SpecialType.Rain)
+      {
          weather = Weather.Rain;
+         newPosition = gameBoard.Weathers.Rain.transform;
+      }
 
       if (gameBoard.IsWeatherActive(weather))
       {
          GameManager.Instance.UpdateTurnPhase(TurnPhase.Play);
          return;
       }
+
+      MoveCardTo(special, newPosition);
       ActiveWeathers.Add(special);
-      gameBoard.SetWeather(Weather.Blizzard);
-      Debug.Log($" Blizzard Card Summoned");
+      gameBoard.SetWeather(weather);
+      GameManager.Instance.UpdateTurnPhase(TurnPhase.TurnEnd, cardMoveDuration);
    }
 
    public void HandleRowSelection(Row row)
@@ -153,7 +167,7 @@ public partial class CardManager
 
       unit.ReturnToHand();
       HighlightCardOff(pendingCard);
-      HighlightAllSilverUnits(false);
+      HighlightSilverUnits(false);
       CancelButton.gameObject.SetActive(false);
 
       var row = SummonedCardsByRow[unit];

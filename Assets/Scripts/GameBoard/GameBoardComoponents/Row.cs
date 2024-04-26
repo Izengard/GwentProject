@@ -73,7 +73,7 @@ public class Row : MonoBehaviour
 
     public void DestroyAllSilverUnits()
     {
-        foreach (var unit in rowUnits)
+        foreach (var unit in rowUnits.ToArray())
             if (unit is SilverUnit silverUnit)
                 CardManager.Instance.DestroyUnit(silverUnit);
     }

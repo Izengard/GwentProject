@@ -269,7 +269,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7310237661416923861, guid: 612eeaa470bc37341a780c0e7ef2a3e7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 110.88054
+      value: 110.88015
       objectReference: {fileID: 0}
     - target: {fileID: 7608933239448958079, guid: 612eeaa470bc37341a780c0e7ef2a3e7, type: 3}
       propertyPath: m_Size
@@ -548,6 +548,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8753269115664596811, guid: cde9f9409e47b7943942d4ed37333977, type: 3}
       propertyPath: leaderInfo
+      value: 
+      objectReference: {fileID: 11400000, guid: 00db7485728617447823b9e0f9de551f, type: 2}
+    - target: {fileID: 8753269115664596811, guid: cde9f9409e47b7943942d4ed37333977, type: 3}
+      propertyPath: <LeaderInfo>k__BackingField
       value: 
       objectReference: {fileID: 11400000, guid: 00db7485728617447823b9e0f9de551f, type: 2}
     - target: {fileID: 8767381716515997559, guid: cde9f9409e47b7943942d4ed37333977, type: 3}
@@ -1291,6 +1295,10 @@ PrefabInstance:
       propertyPath: leaderInfo
       value: 
       objectReference: {fileID: 11400000, guid: 5ff3914940d1afe4aa564340cd3a7c08, type: 2}
+    - target: {fileID: 8753269115664596811, guid: cde9f9409e47b7943942d4ed37333977, type: 3}
+      propertyPath: <LeaderInfo>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 5ff3914940d1afe4aa564340cd3a7c08, type: 2}
     - target: {fileID: 8767381716515997559, guid: cde9f9409e47b7943942d4ed37333977, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -18
@@ -1545,6 +1553,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8753269115664596811, guid: cde9f9409e47b7943942d4ed37333977, type: 3}
       propertyPath: leaderInfo
+      value: 
+      objectReference: {fileID: 11400000, guid: 69184054d5680af41a074207c0080496, type: 2}
+    - target: {fileID: 8753269115664596811, guid: cde9f9409e47b7943942d4ed37333977, type: 3}
+      propertyPath: <LeaderInfo>k__BackingField
       value: 
       objectReference: {fileID: 11400000, guid: 69184054d5680af41a074207c0080496, type: 2}
     - target: {fileID: 8767381716515997559, guid: cde9f9409e47b7943942d4ed37333977, type: 3}

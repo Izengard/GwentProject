@@ -26,6 +26,7 @@ public class PlayerBoard : MonoBehaviour
 
         var deckData = dataBase.DecksDB[selectedFaction];
         deck.SetDeckData(deckData);
+        deck.SetOwnerPlayer((Player)playerNumber);
     }
 
     public void DealCards(int n)
