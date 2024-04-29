@@ -8,6 +8,9 @@ Welcome to GwentPro-Starcraft, a board card game where the mighty races of  the 
 While they are supported by their own technological prowess (Buff cards), they are also subject to the unpredictable and sometimes harsh conditions imposed by nature (Weather Cards).In each round, victory goes to the player who amasses the greatest effective Firepower during the battle.The first player to lose or draw to battles loses the game.
 </div>
 
+## Executing the game 
+To Play the game download Gwent Game.rar file and extract its content .Then play the Gwnet Game.exe file inside
+
 ## User Manual:
 For a more detailed description of the game refer to the user manual at : [link]
 
