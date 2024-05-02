@@ -15,7 +15,7 @@ MonoBehaviour:
   Faction: Zerg
   FactionLogo: {fileID: 21300000, guid: 499affb651cbf71409ffb75ed7dbd04c, type: 3}
   Name: Corruptor
-  effect: 7
+  effect: 5
   Artwork: {fileID: 21300000, guid: e97e24777ae48744dae4fb8cbbe817d6, type: 3}
   Description: "These eerie, armored flyers are the Zerg\u2019s anti-air enforcers.
     Their grotesque forms, part centaur and part giant crab, defy reason"

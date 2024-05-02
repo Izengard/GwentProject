@@ -14,6 +14,6 @@ public abstract class CardInfo : ScriptableObject
 
 public enum Effect
 {
-    Draw, DestroyLesserRow, DestroyWeakestUnit, DestroyStrongestUnit, MultiplyPower,
-    BalanceFieldPower, SetBuff, SetWeather, Versatile, Null, Decoy, Clearing
+    Draw, DestroyLesserRow, DestroyWeakestUnit, DestroyStrongestUnit, CoordinatedTactics,
+    BalanceFieldPower, Buff, Weather, Versatile, None, Decoy, Clearing
 }

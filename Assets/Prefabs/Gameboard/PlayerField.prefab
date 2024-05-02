@@ -736,6 +736,14 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6668426307096174390, guid: 663a2a73dc3586944a860db701982db0, type: 3}
+      propertyPath: m_Spacing.x
+      value: -103
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668426307096174390, guid: 663a2a73dc3586944a860db701982db0, type: 3}
+      propertyPath: m_Spacing.y
+      value: -110
+      objectReference: {fileID: 0}
     - target: {fileID: 7032936819485706192, guid: 663a2a73dc3586944a860db701982db0, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -755,6 +763,10 @@ PrefabInstance:
     - target: {fileID: 7115925881462962401, guid: 663a2a73dc3586944a860db701982db0, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7401088247703844130, guid: 663a2a73dc3586944a860db701982db0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 51.4
       objectReference: {fileID: 0}
     - target: {fileID: 7841978763765618644, guid: 663a2a73dc3586944a860db701982db0, type: 3}
       propertyPath: m_Name

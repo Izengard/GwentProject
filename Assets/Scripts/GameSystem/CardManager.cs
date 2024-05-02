@@ -95,8 +95,8 @@ public partial class CardManager
       CheckRowPowerMods(unit, row);
 
       float effectTimeDelay = cardMoveDuration + .1f;
-      if (unit.CardInfo.effect == Effect.Null || unit.CardInfo.effect == Effect.Versatile
-         || unit.CardInfo.effect == Effect.MultiplyPower || unit.CardInfo.effect == Effect.SetBuff)
+      if (unit.CardInfo.effect == Effect.None || unit.CardInfo.effect == Effect.Versatile
+         || unit.CardInfo.effect == Effect.CoordinatedTactics || unit.CardInfo.effect == Effect.Buff)
       {
          effectTimeDelay = 0f;
       }

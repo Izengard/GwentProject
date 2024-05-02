@@ -34,14 +34,14 @@ public class EffectManager : MonoBehaviour
             case Effect.BalanceFieldPower:
                 BalanceFieldPower();
                 break;
-            case Effect.MultiplyPower:
+            case Effect.CoordinatedTactics:
                 MultiplyPower(unit);
                 break;
-            case Effect.SetBuff:
+            case Effect.Buff:
                 var row = SummonedCardsByRow[unit];
                 row.ActivateBuff();
                 break;
-            case Effect.SetWeather:
+            case Effect.Weather:
                 row = SummonedCardsByRow[unit];
                 var weather = (Weather)(int)row.AttackType;
                 GameBoard.Instance.SetWeather(weather);
@@ -56,7 +56,7 @@ public class EffectManager : MonoBehaviour
     {
         var silverUnits = SummonedCardsByRow.Keys
                         .OfType<SilverUnit>() // Filters and casts to SilverUnit
-                        .ToArray();
+                        .ToArray();             
 
         int maxPower = 0;
         foreach (SilverUnit unit in silverUnits)
@@ -65,7 +65,6 @@ public class EffectManager : MonoBehaviour
         foreach (SilverUnit unit in silverUnits)
             if (unit.Power == maxPower)
                 DestroyUnit(unit);
-
     }
 
     void DestroyLesserUnit()

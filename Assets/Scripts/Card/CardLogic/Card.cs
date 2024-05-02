@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-
 public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 {
     protected bool cardIsInHand = true;
