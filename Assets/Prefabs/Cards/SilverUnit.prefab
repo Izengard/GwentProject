@@ -584,11 +584,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7501244051890739177, guid: 3f6c01f695b7a094db4fa5b9ce3265c9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 15.1
       objectReference: {fileID: 0}
     - target: {fileID: 7501244051890739177, guid: 3f6c01f695b7a094db4fa5b9ce3265c9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 40.6
       objectReference: {fileID: 0}
     - target: {fileID: 7501244051890739177, guid: 3f6c01f695b7a094db4fa5b9ce3265c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -660,7 +660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Artwork: {fileID: 7020741958516825709}
-  card: {fileID: 0}
+  UnitCardInfo: {fileID: 0}
   AttackTypeIcons:
   - {fileID: 6350194162470235002}
   - {fileID: 1381653385192617402}
