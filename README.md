@@ -9,10 +9,7 @@ While they are supported by their own technological prowess (Buff cards), they a
 </div>
 
 ## Executing the game 
-To Play the game download Gwent Game.rar file and extract its content .Then play the Gwnet Game.exe file inside
-
-## User Manual:
-For a more detailed description of the game refer to the user manual at : [link]
+To Play the game download Gwent Game.rar file and extract its content, then play the GwentGame.exe file inside
 
 ## Software Details: 
 * The game was developed with Unity 2022 which inherently uses C# as programming language
